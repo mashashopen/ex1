@@ -46,6 +46,50 @@ double computeCanberraDistance(vector<double> v1, vector<double> v2) {
 
 }
 
+double computeEuclideanDistance(vector<double> v1, vector<double> v2) {
+
+    double sum = 0;
+
+    for (int i = 0; i < size(v2); i++)
+    {
+        sum += pow((v1[i] - v2[i]), 2);
+    }
+
+    return sqrt(sum);
+
+}
+
+double computeManhattanDistance(vector<double> v1, vector <double>v2) {
+    double sum = 0;
+
+    for (int i = 0; i < size(v2); i++)
+    {
+        sum += abs((v1[i] - v2[i]));
+    }
+
+    return sum;
+
+}
+
+double computeMinkowskiDistance(vector<double> v1, vector <double>v2) {
+
+    float order = size(v1) - 1;
+    double sum = 0;
+    double tempSum = 0;
+    float x = 1.0 / order;
+    for (int i = 0; i < size(v1); i++)
+    {
+        tempSum = abs(v1[i] - v2[i]);
+        sum += pow(tempSum, order);
+        tempSum = 0;
+    }
+
+
+    return pow(sum, (1 / order));
+
+}
+
+
 
 int main()
 {
@@ -67,8 +111,11 @@ int main()
     while (is1 >> x) v1.push_back(x);
     while (is2 >> x) v2.push_back(x);
 
-    cout << computeChebyshevDistance(v1, v2) << endl;
+    cout << computeEuclideanDistance(v1, v2) << endl;
+    cout << computeManhattanDistance(v1, v2) << endl;
     cout << computeCanberraDistance(v1, v2) << endl;
+    cout << computeChebyshevDistance(v1, v2) << endl;
+    cout << computeMinkowskiDistance(v1, v2) << endl;
     
  
     return 0; 
