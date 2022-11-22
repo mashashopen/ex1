@@ -9,14 +9,14 @@
 using namespace std;
 
 
-double computeChebyshevDistance(vector<double> v1, vector<double> v2){
+float computeChebyshevDistance(vector<double> v1, vector<double> v2){
     vector<double> subtract(v1.size(), 0);
 
     for (int i = 0; i < subtract.size(); i++) {
         subtract[i] = abs(v1[i] - v2[i]);
     }
 
-    double max = 0;
+    float max = 0;
     for (int i = 0; i < subtract.size(); i++) {
         if (subtract[i] > max)
             max = subtract[i];
