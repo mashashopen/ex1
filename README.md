@@ -25,22 +25,23 @@ then main function print the distance values that each function return.
 
 ==================== Running Example ====================
 
-*valid input*
-input: 3 4 5 6
-       5 7 9 1
+- valid input:
+ 3 4 5 6
+ 5 7 9 1
 
-output: 7.34847
-        14.0
-        5.0
-        1.52273
-        6.07318
+output: 
+7.34847
+14.0
+5.0
+1.52273
+6.07318
 
-
- *invalid input*
- input: 1 6 7
-        5 9 A
+- invalid input:
+1 6 7
+5 9 A
   
- output: invalid input!
+ output: 
+ invalid input!
 
 
  ==================== Compiling Command ====================
