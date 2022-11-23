@@ -5,12 +5,21 @@
 #include <iostream>
 #include <string>
 
-
+/*
+* checks if number is whole.
+* 
+* @return true if is whole, false otherwise.
+*/
 bool Distance::isWholeNumber() {
 	return floor(m_distanceValue) == m_distanceValue;
 }
 
-//if a number is whole will force it to be printed with point zero in the end (and not as integer)
+
+/*
+* if a number is whole will force it to be printed with point
+* zero in the end (and not as integer).
+*/
+
 void Distance::printDistance() {
 	if(isWholeNumber()) {
         cout << m_distanceValue << ".0" << endl;
@@ -22,7 +31,12 @@ void Distance::printDistance() {
 
 //calculation for all the wanted distances:
 
-//Chebyshev distance
+/*
+* Chebyshev distance.
+*
+* @param v1,v2 double type vectors.
+* @return distance calculated by Chebyshev algorithm.
+*/
 double computeChebyshevDistance(vector<double> v1, vector<double> v2) {
     std::vector<double> subtract(v1.size(), 0);
 
@@ -39,7 +53,12 @@ double computeChebyshevDistance(vector<double> v1, vector<double> v2) {
     return max;
 }
 
-//Canberra distance
+/*
+* Canberra distance.
+*
+* @param v1,v2 double type vectors.
+* @return distance calculated by Canberra algorithm.
+*/
 double computeCanberraDistance(vector<double> v1, vector<double> v2) {
     std::vector<double> tempVector(v1.size(), 0);
 
@@ -57,7 +76,12 @@ double computeCanberraDistance(vector<double> v1, vector<double> v2) {
     return sum;
 }
 
-//Euclidean distance
+/*
+* Euclidean distance.
+*
+* @param v1,v2 double type vectors.
+* @return distance calculated by Euclidean algorithm.
+*/
 double computeEuclideanDistance(vector<double> v1, vector<double> v2) {
 
     double sum = 0;
@@ -71,7 +95,12 @@ double computeEuclideanDistance(vector<double> v1, vector<double> v2) {
 
 }
 
-//Manhattan distance
+/*
+* Manhattan distance.
+*
+* @param v1,v2 double type vectors.
+* @return distance calculated by Manhattan algorithm.
+*/
 double computeManhattanDistance(vector<double> v1, vector<double>v2) {
     double sum = 0;
 
@@ -84,7 +113,12 @@ double computeManhattanDistance(vector<double> v1, vector<double>v2) {
 
 }
 
-//Minkowski distance
+/*
+* Minkowski distance.
+*
+* @param v1,v2 double type vectors.
+* @return distance calculated by Minkowski algorithm.
+*/
 double computeMinkowskiDistance(vector<double> v1, vector<double>v2) {
 
     float order = v1.size() - 1;
