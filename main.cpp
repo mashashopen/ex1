@@ -12,6 +12,12 @@
 
 using namespace std;
 
+/*
+* checks if input is not valid.
+*
+* @param s, string represent future vector.
+* @return true if is not valid, false otherwise.
+*/
 bool inputIsNotValid(string s) {
     // case 1: empty input
     if (s.size() == 0)
@@ -29,6 +35,12 @@ bool inputIsNotValid(string s) {
     return false;
 }
 
+/*
+* get vector as string input.
+*
+* @param s, string from user.
+* @return v,the vector .
+*/
 vector<double> getVectorAsInput() {
     string s;
     getline(cin, s);
