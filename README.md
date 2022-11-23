@@ -45,11 +45,13 @@ output:
 
 
  ==================== Compiling Command ====================
-  g++ -std=c++11 main.cpp Distance.cpp
+
+ * g++ -std=c++11 main.cpp Distance.cpp
 
 
  ==================== Running Command ====================
-  ./a.out
+  * ./a.out
+
 
 
 
