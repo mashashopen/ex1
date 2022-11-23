@@ -1,26 +1,32 @@
-// ex1_part2.cpp : This file contains the 'main' function. Program execution begins and ends there.
+// main.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
 #include <iostream>
 #include <vector>
 #include <sstream>
 #include "Distance.h"
-#include <stdlib.h>
+#include <iterator>
+#include <string>
 
 
 
 using namespace std;
 
-bool inputValidation(string s) {
-    // ==================== input validation =====================
+/*
+* checks if input is not valid.
+*
+* @param s, string represent future vector.
+* @return true if is not valid, false otherwise.
+*/
+bool inputIsNotValid(string s) {
     // case 1: empty input
-    if (size(s) == 0)
+    if (s.size() == 0)
     {
         return true;
     }
  
     // case 2: dealing with chars
-    for (int i = 0; i < size(s); i++)
+    for (int i = 0; i < s.size(); i++)
     {
         if (s[i] == char()) {
             return true;
@@ -29,12 +35,17 @@ bool inputValidation(string s) {
     return false;
 }
 
+/*
+* get vector as string input.
+*
+* @param s, string from user.
+* @return v,the vector .
+*/
 vector<double> getVectorAsInput() {
     string s;
     getline(cin, s);
 
-    if (inputValidation(s))
-    {
+    if (inputIsNotValid(s)){
         cout << "invalid input!";
         exit(1);
     } 
@@ -55,7 +66,7 @@ int main()
 
     // input validation of 2 vectors:
     // case 3: vectors are in different length:
-    if (size(v1) != size(v2))
+    if (v1.size() != v2.size())
     {
         cout << "invalid input!";
             exit(1);
