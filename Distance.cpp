@@ -1,7 +1,7 @@
 #include "Distance.h"
 #include <iostream>
 #include <vector>
-#include <math.h>
+#include <cmath>
 #include <iostream>
 #include <string>
 
