@@ -26,28 +26,30 @@ then main function print the distance values that each function return.
 ==================== Running Example ====================
 
 - valid input:
- 3 4 5 6
- 5 7 9 1
+* 3 4 5 6
+* 5 7 9 1
 
 output: 
-7.34847
-14.0
-5.0
-1.52273
-6.07318
+* 7.34847
+* 14.0
+* 5.0
+* 1.52273
+* 6.07318
 
 - invalid input:
-1 6 7
-5 9 A
+* 1 6 7
+* 5 9 A
   
  output: 
  invalid input!
 
 
  ==================== Compiling Command ====================
+  g++ -std=c++11 main.cpp Distance.cpp -o program
+  program.exe
 
 
-
+ ==================== Running Command ====================
 
 
 
