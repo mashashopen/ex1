@@ -5,23 +5,47 @@
 #include <vector>
 #include <sstream>
 #include "Distance.h"
+#include <stdlib.h>
+
 
 
 using namespace std;
 
+bool inputValidation(string s) {
+    // ==================== input validation =====================
+    // case 1: empty input
+    if (size(s) == 0)
+    {
+        return true;
+    }
+ 
+    // case 2: dealing with chars
+    for (int i = 0; i < size(s); i++)
+    {
+        if (s[i] == char()) {
+            return true;
+        }
+    }
+    return false;
+}
 
 vector<double> getVectorAsInput() {
     string s;
     getline(cin, s);
+
+    if (inputValidation(s))
+    {
+        cout << "invalid input!";
+        exit(1);
+    } 
+
     istringstream is(s);
     vector<double> v((istream_iterator<double>(is)), istream_iterator<double>());
     double x;
-    //add here input checks!!
-    while (is >> x) v.push_back(x);
 
+    while (is >> x) v.push_back(x);
     return v;
 }
-
 
 int main()
 {
@@ -29,19 +53,25 @@ int main()
     vector<double> v1 = getVectorAsInput();
     vector<double> v2 = getVectorAsInput();
 
-    Distance manhattan(v1, v2, &computeManhattanDistance);
-    Distance chebyshev(v1, v2, &computeChebyshevDistance);
-    Distance minkowski(v1, v2, &computeMinkowskiDistance);
-    Distance euclidean(v1, v2, &computeEuclideanDistance);
-    Distance canberra(v1, v2, &computeCanberraDistance);
-    
+    // input validation of 2 vectors:
+    // case 3: vectors are in different length:
+    if (size(v1) != size(v2))
+    {
+        cout << "invalid input!";
+            exit(1);
+    }
+ 
+        Distance manhattan(v1, v2, &computeManhattanDistance);
+        Distance chebyshev(v1, v2, &computeChebyshevDistance);
+        Distance minkowski(v1, v2, &computeMinkowskiDistance);
+        Distance euclidean(v1, v2, &computeEuclideanDistance);
+        Distance canberra(v1, v2, &computeCanberraDistance);
+
     euclidean.printDistance();
     manhattan.printDistance();
     chebyshev.printDistance();
     canberra.printDistance();
     minkowski.printDistance();
- 
-    return 0; 
-}
 
-// TODOS: input check 
+    return 0;
+}
