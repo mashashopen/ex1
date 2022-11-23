@@ -45,20 +45,13 @@ output:
 
 
  ==================== Compiling Command ====================
-<<<<<<< HEAD
+
  * g++ -std=c++11 main.cpp Distance.cpp
 
 
  ==================== Running Command ====================
- * ./a.out
+  * ./a.out
 
-=======
-  g++ -std=c++11 main.cpp Distance.cpp
-
-
- ==================== Running Command ====================
-  ./a.out
->>>>>>> fda787280d1f67e68e7b15c1a3ad0f394aa324c0
 
 
 
