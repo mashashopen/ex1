@@ -4,6 +4,7 @@
 //#include "Distance.h"
 #include <iterator>
 #include <string>
+#include <map>
 
 using namespace std;
 
@@ -11,20 +12,19 @@ using namespace std;
 class knn {
 
 	//members:
-	int k; // the number to find k nearest neighbors
-	vector<double>v;  //the input: vector with sizes of flowers
-	string computeDisMetric; //which metric to use (AUC/MAN/CHB/CAN/MIN)
+	int m_k; // the number to find k nearest neighbors
+	vector<double> m_v;  //the input: vector with sizes of flowers
+	string m_distanceType; //which metric to use (AUC/MAN/CHB/CAN/MIN)
+	map<vector<double>, string> m_mappedClassifiedData;
 
 	//also we want to keep our k nearest vectors, and all vectors from training data,how?
-
-
 
 
 public:
 	//constructor that takes in an int
 	knn(int val, string s) {
-		k = val;
-		computeDisMetric = s;
+		m_k = val;
+		m_distanceType = s;
 	}
 
 	//diconstructor
@@ -35,6 +35,9 @@ public:
 
 	// calculate the distance between vector input to all classified vectros:
 	double CalculateDistance() {
+
+
+
 
 		//for loop to go over the samples (vectors) in the classified file:
 

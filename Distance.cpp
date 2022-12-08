@@ -29,6 +29,25 @@ void Distance::printDistance() {
 	}
 }
 
+double Distance::setRightDistanceFunction() {
+    if (m_distName == "AUC") {
+        return computeEuclideanDistance(m_v1, m_v2);
+    }
+    if (m_distName == "MAN") {
+        return computeManhattanDistance(m_v1, m_v2);
+    }
+    if (m_distName == "CHB") {
+        return computeChebyshevDistance(m_v1, m_v2);
+    }
+    if (m_distName == "CAN") {
+        return computeCanberraDistance(m_v1, m_v2);
+    }
+    if (m_distName == "MIN") {
+        return computeMinkowskiDistance(m_v1, m_v2);
+
+    }
+}
+
 //calculation for all the wanted distances:
 
 /*
