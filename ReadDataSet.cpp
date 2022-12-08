@@ -1,23 +1,22 @@
-
+#include "ReadDataSet.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
 #include <sstream>
 #include <map>
-#include <unordered_map>
 
 using namespace std;
 
 
-vector<vector<string>> readFile() {
+vector<vector<string>> ReadDataSet:: readFile() {
 	string fname = "datasets/wine/wine_Classified.csv";
 
 	vector<vector<string>> content;
 	vector<string> row;
 	string line, word;
 
-	fstream file(fname, ios::in);
+	fstream file(m_fileName, ios::in);
 	if (file.is_open()) {
 		while (getline(file, line)) {
 			row.clear();
@@ -31,16 +30,13 @@ vector<vector<string>> readFile() {
 	}
 	else
 		cout << "Could not open the file\n";
-	for (int i = 0;i < content.size();i++) {
-		cout << content[i][content[i].size() - 1] << " ";
-		i += content[i].size();
-	}
+
 	return content;
 }
 
 // map all vectors into vector -> label
 
-map<vector<double>, string> createMap(vector<vector<string>> content)
+map<vector<double>, string> ReadDataSet:: createMapOfData(vector<vector<string>> fileContent)
 {
 	map<vector<double>, string> classified;
 
@@ -48,15 +44,15 @@ map<vector<double>, string> createMap(vector<vector<string>> content)
 	string number;
 	string label;
 
-	for (int i = 0;i < content.size();i++) {
+	for (int i = 0;i < fileContent.size();i++) {
 		numbers.clear();
-		for (int j = 0;j < content[i].size();j++) {
-			if (j != content[i].size() - 1) {
-				number = content[i][j];
+		for (int j = 0;j < fileContent[i].size();j++) {
+			if (j != fileContent[i].size() - 1) {
+				number = fileContent[i][j];
 				numbers.push_back(stod(number));
 			}
 			else {
-				label = content[i][j];
+				label = fileContent[i][j];
 			}
 
 		}
@@ -66,8 +62,4 @@ map<vector<double>, string> createMap(vector<vector<string>> content)
 	return classified;
 }
 
-int main() {
-	vector<vector<string>> content = readFile();
-	map<vector<double>, string> classified = createMap(content);
 
-}

@@ -7,6 +7,7 @@
 #include "Distance.h"
 #include <iterator>
 #include <string>
+#include "ReadDataSet.h"
 
 
 
@@ -66,23 +67,20 @@ int main()
 
     // input validation of 2 vectors:
     // case 3: vectors are in different length:
-    if (v1.size() != v2.size())
+    /*if (v1.size() != v2.size())
     {
         cout << "invalid input!";
             exit(1);
-    }
+    }*/
  
-        Distance manhattan(v1, v2, &computeManhattanDistance);
-        Distance chebyshev(v1, v2, &computeChebyshevDistance);
-        Distance minkowski(v1, v2, &computeMinkowskiDistance);
-        Distance euclidean(v1, v2, &computeEuclideanDistance);
-        Distance canberra(v1, v2, &computeCanberraDistance);
+        Distance manhattan(v1, v2, "MAN");
+        manhattan.printDistance();
+        ReadDataSet classifiedWines("datasets/wine/wine_Classified.csv");
+        vector<vector<string>> winesContent = classifiedWines.readFile();
+        map<vector<double>, string> mappedData = classifiedWines.createMapOfData(winesContent);
 
-    euclidean.printDistance();
-    manhattan.printDistance();
-    chebyshev.printDistance();
-    canberra.printDistance();
-    minkowski.printDistance();
+
+
 
     return 0;
 }
