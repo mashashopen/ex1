@@ -8,6 +8,7 @@ class Distance {
 	double m_distanceValue;
 	string m_distName;
 public:
+
 	Distance(vector<double> v1, vector<double> v2, string name) {
 		m_v1 = v1;
 		m_v2 = v2;

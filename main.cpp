@@ -74,7 +74,6 @@ int main()
     }*/
  
         Distance manhattan(v1, v2, "MAN");
-        manhattan.printDistance();
         ReadDataSet classifiedWines("datasets/wine/wine_Classified.csv");
         vector<vector<string>> winesContent = classifiedWines.readFile();
         map<vector<double>, string> mappedData = classifiedWines.createMapOfData(winesContent);
