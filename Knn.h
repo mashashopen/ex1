@@ -7,6 +7,9 @@ class Knn {
 	vector<double> m_v;  //the input: vector with sizes of flowers //which metric to use (AUC/MAN/CHB/CAN/MIN)
 	map<vector<double>, string> m_mappedClassifiedData;
 	string m_distanceType;
+	//
+	map<double, string> map_distanceLabel; 
+	map<double, string> kNearest;
 
 public:
 	Knn(int val, string s){
@@ -15,5 +18,6 @@ public:
 	}
 
 	double CalculateDistance();
-
+	void FindKnearest();
+	string predict();
 };
