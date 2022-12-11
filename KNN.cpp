@@ -11,27 +11,26 @@ using namespace std;
 
 
 /// calculate the distance between vector input to all classified vectros:
-double Knn:: CalculateDistance() {
+map<double, string> Knn:: CalculateDistance() {
 	map<double, string, less<double>> distanceLabel;
 	map<vector<double>, string>::iterator it;
-	vector<double> myInput = m_v;
 	for (it = m_mappedClassifiedData.begin(); it != m_mappedClassifiedData.end(); it++)
 	{
 		vector<double> classifiedVector = it->first;
-		Distance d(myInput, classifiedVector, m_distanceType);
+		Distance d(m_v, classifiedVector, m_distanceType);
 		distanceLabel[d.setRightDistanceFunction()] = it->second;
 	}
 
-	map_distanceLabel = distanceLabel;
+	return distanceLabel;
 }
 
 
 	// finding the k nearest vectors to the vector input :
-	void Knn::FindKnearest() {
+map<double, string> Knn::FindKnearest() {
 		///the distanceLabel map created in CalculateDistance is already sorted,
 		// we now need to take k first values :
-		map<double, string> kNearestNeighbors(map_distanceLabel.begin(), next(map_distanceLabel.begin(), m_k));
-		kNearest = kNearestNeighbors;
+		map<double, string> kNearestNeighbors(m_mapDistanceLabel.begin(), next(m_mapDistanceLabel.begin(), m_k));
+		return kNearestNeighbors;
 	}
 
 
@@ -44,7 +43,7 @@ double Knn:: CalculateDistance() {
 		int freq = 0;
 		map<double,string>::iterator it;
 		// convert all lables into vector:
-		for (it= kNearest.begin(); it != kNearest.end(); it++)
+		for (it= m_kNearest.begin(); it != m_kNearest.end(); it++)
 		{
 			labels.push_back(it->second);
 		}

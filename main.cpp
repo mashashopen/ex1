@@ -8,6 +8,7 @@
 #include <iterator>
 #include <string>
 #include "ReadDataSet.h"
+#include "Knn.h"
 
 
 
@@ -63,7 +64,6 @@ int main()
 {
 
     vector<double> v1 = getVectorAsInput();
-    vector<double> v2 = getVectorAsInput();
 
     // input validation of 2 vectors:
     // case 3: vectors are in different length:
@@ -73,10 +73,14 @@ int main()
             exit(1);
     }*/
  
-        Distance manhattan(v1, v2, "MAN");
-        ReadDataSet classifiedWines("datasets/wine/wine_Classified.csv");
+        //Distance manhattan(v1, v2, "MAN");
+        ReadDataSet classifiedWines("datasets/iris/iris_Classified.csv");
         vector<vector<string>> winesContent = classifiedWines.readFile();
         map<vector<double>, string> mappedData = classifiedWines.createMapOfData(winesContent);
+
+        Knn knnModel(v1, 3, "MAN", mappedData);
+
+        cout << knnModel.predict() << endl;
 
 
 
