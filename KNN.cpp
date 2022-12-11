@@ -10,8 +10,7 @@
 using namespace std;
 
 
-
-	// calculate the distance between vector input to all classified vectros:
+/// calculate the distance between vector input to all classified vectros:
 double Knn:: CalculateDistance() {
 	map<double, string, less<double>> distanceLabel;
 	map<vector<double>, string>::iterator it;
@@ -22,23 +21,48 @@ double Knn:: CalculateDistance() {
 		Distance d(myInput, classifiedVector, m_distanceType);
 		distanceLabel[d.setRightDistanceFunction()] = it->second;
 	}
-	return 0;
+
+	map_distanceLabel = distanceLabel;
 }
 
 
-
-	//// finding the k nearest vectors to the input vector:
-	//void FindKnearest() {
-	//	//we will need to sort the array of distance from CalculateDistanc
-	//	//and then take the k classes respectively, in this function we call CalculateDistanc
-	//}
-
-
-
-	//// when we have the k nearest vectors to our input vector, we will check which class 
-	//// got the "higher score"--> that eill be the predicted class of out input.
-	//int predict() {
-	//	//in this fucntion we will call FindKnearest()
-	//}
+	// finding the k nearest vectors to the vector input :
+	void Knn::FindKnearest() {
+		///the distanceLabel map created in CalculateDistance is already sorted,
+		// we now need to take k first values :
+		map<double, string> kNearestNeighbors(map_distanceLabel.begin(), next(map_distanceLabel.begin(), m_k));
+		kNearest = kNearestNeighbors;
+	}
 
 
+
+	string Knn::predict() {
+		//// now we have the map of k nearest vectors to our input vector. we need check which label 
+		//// got the "higher score"--> that will be the predicted class of out input.
+		vector<string> labels;
+		string predictedLable;
+		int freq = 0;
+		map<double,string>::iterator it;
+		// convert all lables into vector:
+		for (it= kNearest.begin(); it != kNearest.end(); it++)
+		{
+			labels.push_back(it->second);
+		}
+		// find the most frequent string in this vector:
+		for (int i = 0; i < labels.size(); i++)
+		{
+			int counter = 0;
+			for (int j = 0; j < labels.size(); j++)
+			{
+				if (labels[j]== labels[i]) {
+					counter = counter + 1;
+				}
+			}
+			if (counter>=freq) {
+				predictedLable = labels[i];
+				freq = counter;
+			}
+		}	
+		return predictedLable;
+	}
+	//check
