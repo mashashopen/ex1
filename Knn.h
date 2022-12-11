@@ -8,16 +8,20 @@ class Knn {
 	map<vector<double>, string> m_mappedClassifiedData;
 	string m_distanceType;
 	//
-	map<double, string> map_distanceLabel; 
-	map<double, string> kNearest;
+	map<double, string> m_mapDistanceLabel;
+	map<double, string> m_kNearest;
 
 public:
-	Knn(int val, string s){
+	Knn(vector<double> v, int val, string s, map<vector<double>, string> mappedClassifiedData){
 		m_k = val;
 		m_distanceType = s;
+		m_mappedClassifiedData = mappedClassifiedData;
+		m_v = v;
+		m_mapDistanceLabel = CalculateDistance();
+		m_kNearest = FindKnearest();
 	}
 
-	double CalculateDistance();
-	void FindKnearest();
+	map<double, string> CalculateDistance();
+	map<double, string> FindKnearest();
 	string predict();
 };
