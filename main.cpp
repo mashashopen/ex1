@@ -10,7 +10,7 @@
 #include "ReadDataSet.h"
 #include "Knn.h"
 
-
+#include <stdlib.h>
 
 using namespace std;
 
@@ -60,44 +60,79 @@ vector<double> getVectorAsInput() {
     return v;
 }
 
-void setArgs(int argc,char* argv[],int &k, string &disMetric) {
+/*
+* command line args validation.
+*
+* @param
+* @return true if all args are valid and false otherwise.
+*/
+bool setArgs(int argc,char* argv[],int& k, string& file, string& disMetric) {
     // argv:
     //1. k number 
     //2. the dataset
     //3. the distance metric
 
      //corrcet number of args:
-    if (argc == 3)// should be 4 with the dataset
+    if (argc == 4)
     {
-        k = *argv[1];
-        disMetric = string(argv[2]); 
+        //checking if first arg is an integter (k number)
+        if (true)
+        {
+
+            //checking if second arg is correct string of database:
+            if (argv[2]=="iris_Classified.csv" || argv[2]== "wine_Classified.csv" || argv[2]=="beans.Classified.csv")
+            {
+
+                //checking if third arg is correct string of distance metric:
+                if (argv[3]== "AUC" ||argv[3]== "MAN" || argv[3]=="CHB" || argv[3]=="CAN"|| argv[3]=="MIN")
+                {
+                    return true;
+                }
+
+            }
+
+        }
 
     }
-    else if (argc > 3) {// should be 4 with the dataset
+    else if (argc > 4) {
         cout << "Too many arguments supplied.\n";
-        exit(1);
+        return false;
     }
-    else if (argc < 3) {// should be 4 with the dataset
+    else if (argc < 4) {
         cout << "Missing arguments.\n";
-        exit(1);
+        return false;
     }
-   
 
+  
 }
 
-int main(int argc, char *argv[])
+
+
+
+int main(int argc, char* argv[])
 {
+
     int k;
     string disMetric;
-    //string dataSet;
+    string file;
+
+    //checking input from command line...
+    if (!(setArgs(argc, argv, k, file, disMetric)))
+    {
+        cout << "invalid input!" << endl;
+        exit(1);
+    }
+
+    //after validation- set the args:
+     k = strtol(argv[1], NULL, 10);
+     file = argv[2];
+     disMetric = argv[3];
     
-    setArgs(argc,argv,k,disMetric);
-    cout << k; // print 51 ,why? should be 3 :(
 
     // the vector to classified: 
     vector<double> v1 = getVectorAsInput();
   
-    ReadDataSet classified("C:/Users/Maayan Vikel/Desktop/datasets/iris/iris_classified.csv");
+    ReadDataSet classified("C:/Users/Maayan Vikel/Desktop/datasets/wine/wine_Classified.csv");
     vector<vector<string>> fileContent = classified.readFile();
     map<vector<double>, string> mappedData = classified.createMapOfData(fileContent);
 
