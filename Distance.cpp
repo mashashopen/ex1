@@ -6,6 +6,21 @@
 #include <string>
 
 /*
+* input validation of 2 vectors.
+* in case vectors are in different length, the program will end.
+*
+*/
+void Distance::validationOfTwoVec(vector<double> v1, vector<double> v2) {
+
+   if (v1.size() != v2.size())
+   {
+       cout << "invalid input!";
+           exit(1);
+   }
+ }
+
+
+/*
 * checks if number is whole.
 * 
 * @return true if is whole, false otherwise.

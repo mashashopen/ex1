@@ -15,7 +15,7 @@
 using namespace std;
 
 /*
-* checks if input is not valid.
+* checks if input (vector) is not valid.
 *
 * @param s, string represent future vector.
 * @return true if is not valid, false otherwise.
@@ -60,30 +60,50 @@ vector<double> getVectorAsInput() {
     return v;
 }
 
-int main()
-{
+void setArgs(int argc,char* argv[],int &k, string &disMetric) {
+    // argv:
+    //1. k number 
+    //2. the dataset
+    //3. the distance metric
 
-    vector<double> v1 = getVectorAsInput();
-
-    // input validation of 2 vectors:
-    // case 3: vectors are in different length:
-    /*if (v1.size() != v2.size())
+     //corrcet number of args:
+    if (argc == 3)// should be 4 with the dataset
     {
-        cout << "invalid input!";
-            exit(1);
-    }*/
- 
-        //Distance manhattan(v1, v2, "MAN");
-        ReadDataSet classifiedWines("datasets/iris/iris_Classified.csv");
-        vector<vector<string>> winesContent = classifiedWines.readFile();
-        map<vector<double>, string> mappedData = classifiedWines.createMapOfData(winesContent);
+        k = *argv[1];
+        disMetric = string(argv[2]); 
 
-        Knn knnModel(v1, 3, "MAN", mappedData);
+    }
+    else if (argc > 3) {// should be 4 with the dataset
+        cout << "Too many arguments supplied.\n";
+        exit(1);
+    }
+    else if (argc < 3) {// should be 4 with the dataset
+        cout << "Missing arguments.\n";
+        exit(1);
+    }
+   
+
+}
+
+int main(int argc, char *argv[])
+{
+    int k;
+    string disMetric;
+    //string dataSet;
+    
+    setArgs(argc,argv,k,disMetric);
+    cout << k; // print 51 ,why? should be 3 :(
+
+    // the vector to classified: 
+    vector<double> v1 = getVectorAsInput();
+  
+    ReadDataSet classified("C:/Users/Maayan Vikel/Desktop/datasets/iris/iris_classified.csv");
+    vector<vector<string>> fileContent = classified.readFile();
+    map<vector<double>, string> mappedData = classified.createMapOfData(fileContent);
+
+        Knn knnModel(v1, k, disMetric, mappedData);
 
         cout << knnModel.predict() << endl;
-
-
-
 
     return 0;
 }

@@ -9,8 +9,29 @@
 using namespace std;
 
 
+///setting file name acording to argv[2]- the dataset
+void ReadDataSet:: setFileName(string fileName){
+	if (fileName == "iris_Classified.csv") {
+		//m_fileName ="path"
+		return;
+	}
+	else if (fileName == "wine_Classified.csv") {
+		//m_fileName ="path"
+		return;
+	}
+	else if (fileName == "beans.Classified.csv") {
+		//m_fileName ="path"
+		return;
+	}
+	//in case that the input (argv[2]) is wrong and doesnt match any of the datasets:
+	cout << "Wrong data set!";
+	exit(1);
+
+}
+
+
 vector<vector<string>> ReadDataSet:: readFile() {
-	string fname = "datasets/wine/wine_Classified.csv";
+    //string fname = "datasets/wine/wine_Classified.csv";
 
 	vector<vector<string>> content;
 	vector<string> row;
