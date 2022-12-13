@@ -18,7 +18,7 @@ map<double, string> Knn:: CalculateDistance() {
 	{
 		vector<double> classifiedVector = it->first;
 		Distance d(m_v, classifiedVector, m_distanceType);
-		distanceLabel[d.setRightDistanceFunction()] = it->second;
+		distanceLabel[d.getDistanceValue()] = it->second;
 	}
 
 	return distanceLabel;
@@ -29,7 +29,16 @@ map<double, string> Knn:: CalculateDistance() {
 map<double, string> Knn::FindKnearest() {
 		///the distanceLabel map created in CalculateDistance is already sorted,
 		// we now need to take k first values :
-		map<double, string> kNearestNeighbors(m_mapDistanceLabel.begin(), next(m_mapDistanceLabel.begin(), m_k));
+	map<double, string>::iterator it;
+	map<double, string> kNearestNeighbors;
+	int count = 0;
+	for (it = m_mapDistanceLabel.begin(); it != m_mapDistanceLabel.end(); it++) {
+			if (count == m_k)
+				break;
+			else
+				count += 1;
+				kNearestNeighbors[it->first] = it->second;
+	}
 		return kNearestNeighbors;
 	}
 

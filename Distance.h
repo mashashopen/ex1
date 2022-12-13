@@ -9,16 +9,16 @@ class Distance {
 	string m_distName;
 public:
 
-	Distance(vector<double> v1, vector<double> v2, string name) {
+	Distance(vector<double> v1, vector<double> v2, string type) {
 		m_v1 = v1;
 		m_v2 = v2;
-		m_distName = name;
-		m_distanceValue = setRightDistanceFunction();
+		m_distanceValue = setRightDistanceFunction(type);
 	}
 
 	bool isWholeNumber();
 	void printDistance();
-	double setRightDistanceFunction();
+	double setRightDistanceFunction(string distanceType);
+	double getDistanceValue();
 };
 double computeChebyshevDistance(vector<double> v1, vector<double> v2);
 double computeCanberraDistance(vector<double> v1, vector<double> v2);
