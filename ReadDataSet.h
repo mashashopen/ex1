@@ -19,6 +19,5 @@ public:
 	}
 	vector<vector<string>> readFile();
 	map<vector<double>, string> createMapOfData(vector<vector<string>> fileContent);
-	void setFileName(string fileName);
 };
 
