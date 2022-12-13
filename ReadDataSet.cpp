@@ -70,7 +70,8 @@ map<vector<double>, string> ReadDataSet:: createMapOfData(vector<vector<string>>
 		for (int j = 0;j < fileContent[i].size();j++) {
 			if (j != fileContent[i].size() - 1) {
 				number = fileContent[i][j];
-				numbers.push_back(stod(number));
+				double number_d = stod(number);
+				numbers.push_back(number_d);
 			}
 			else {
 				label = fileContent[i][j];
@@ -80,6 +81,7 @@ map<vector<double>, string> ReadDataSet:: createMapOfData(vector<vector<string>>
 		classified[numbers] = label;
 
 	}
+
 	return classified;
 }
 
