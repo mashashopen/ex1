@@ -12,9 +12,17 @@ public:
 	Distance(vector<double> v1, vector<double> v2, string type) {
 		m_v1 = v1;
 		m_v2 = v2;
+<<<<<<< HEAD
 		m_distanceValue = setRightDistanceFunction(type);
-	}
+=======
+		//validation of the input vector and the vector from the classified file: 
+		validationOfTwoVec(m_v1, m_v2);
 
+		m_distName = name;
+		m_distanceValue = setRightDistanceFunction();
+>>>>>>> 97f9d21b2f4da3ac03daa821c05a2804645ac825
+	}
+	void validationOfTwoVec(vector<double> v1, vector<double> v2);
 	bool isWholeNumber();
 	void printDistance();
 	double setRightDistanceFunction(string distanceType);
