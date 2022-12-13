@@ -14,10 +14,11 @@ class ReadDataSet
 
 public:
 	ReadDataSet(string fileName) {
+		
 		m_fileName = fileName;
 	}
 	vector<vector<string>> readFile();
 	map<vector<double>, string> createMapOfData(vector<vector<string>> fileContent);
-
+	void setFileName(string fileName);
 };
 
