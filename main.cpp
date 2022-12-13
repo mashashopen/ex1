@@ -9,6 +9,7 @@
 #include <string>
 #include "ReadDataSet.h"
 #include "Knn.h"
+#include <algorithm>
 
 #include <stdlib.h>
 
@@ -60,53 +61,54 @@ vector<double> getVectorAsInput() {
     return v;
 }
 
+bool isNumber(const string& s)
+{
+    for (char const& ch : s) {
+        if (std::isdigit(ch) == 0)
+            return false;
+    }
+    return true;
+}
+
 /*
 * command line args validation.
 *
 * @param
 * @return true if all args are valid and false otherwise.
 */
-bool setArgs(int argc,char* argv[],int& k, string& file, string& disMetric) {
-    // argv:
-    //1. k number 
-    //2. the dataset
-    //3. the distance metric
+bool areValidArguments(int argc,char* argv[],int& k, string& file, string& disMetric) {
+    /*argv:
+    1. k number 
+    2. the dataset file
+    3. the distance metric type
+    */
+    bool valid = true;
 
      //corrcet number of args:
-    if (argc == 4)
-    {
+    if (argc == 4){
         //checking if first arg is an integter (k number)
-        if (true)
-        {
-
-            //checking if second arg is correct string of database:
-            if (argv[2]=="iris_Classified.csv" || argv[2]== "wine_Classified.csv" || argv[2]=="beans.Classified.csv")
-            {
-
-                //checking if third arg is correct string of distance metric:
-                if (argv[3]== "AUC" ||argv[3]== "MAN" || argv[3]=="CHB" || argv[3]=="CAN"|| argv[3]=="MIN")
-                {
-                    return true;
-                }
-
-            }
-
+        if (!isNumber(argv[1]) || strtol(argv[1], NULL, 10) <= 0) {
+            valid = false;
         }
 
+        //checking if third arg is correct string of distance metric:
+        string distType = argv[3];
+        if (!(distType == "AUC" || distType == "MAN" || distType == "CHB" || distType == "CAN" || distType == "MIN")) {
+            valid = false;
+        }
     }
     else if (argc > 4) {
         cout << "Too many arguments supplied.\n";
-        return false;
+        valid = false;
     }
-    else if (argc < 4) {
+    else{ //(argc < 4)
         cout << "Missing arguments.\n";
-        return false;
+        valid = false;
     }
+    return valid;
 
   
 }
-
-
 
 
 int main(int argc, char* argv[])
@@ -117,7 +119,7 @@ int main(int argc, char* argv[])
     string file;
 
     //checking input from command line...
-    if (!(setArgs(argc, argv, k, file, disMetric)))
+    if (!(areValidArguments(argc, argv, k, file, disMetric)))
     {
         cout << "invalid input!" << endl;
         exit(1);
@@ -129,16 +131,19 @@ int main(int argc, char* argv[])
      disMetric = argv[3];
     
 
-    // the vector to classified: 
-    vector<double> v1 = getVectorAsInput();
-  
-    ReadDataSet classified("C:/Users/Maayan Vikel/Desktop/datasets/wine/wine_Classified.csv");
-    vector<vector<string>> fileContent = classified.readFile();
-    map<vector<double>, string> mappedData = classified.createMapOfData(fileContent);
+     //get input vector and use knn model forever
+     while (true) {
+         // the vector to classified: 
+         vector<double> v1 = getVectorAsInput();
 
-        Knn knnModel(v1, k, disMetric, mappedData);
+         ReadDataSet classified(file);
+         vector<vector<string>> fileContent = classified.readFile();
+         map<vector<double>, string> mappedData = classified.createMapOfData(fileContent);
 
-        cout << knnModel.predict() << endl;
+         Knn knnModel(v1, k, disMetric, mappedData);
+
+         cout << knnModel.predict() << endl;
+     }
 
     return 0;
 }

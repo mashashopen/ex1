@@ -19,7 +19,6 @@ void Distance::validationOfTwoVec(vector<double> v1, vector<double> v2) {
    }
  }
 
-
 /*
 * checks if number is whole.
 * 
@@ -48,18 +47,21 @@ double Distance::setRightDistanceFunction(string distanceType) {
     if (distanceType == "AUC") {
         return computeEuclideanDistance(m_v1, m_v2);
     }
-    if (distanceType == "MAN") {
+    else if (distanceType == "MAN") {
         return computeManhattanDistance(m_v1, m_v2);
     }
-    if (distanceType == "CHB") {
+    else if (distanceType == "CHB") {
         return computeChebyshevDistance(m_v1, m_v2);
     }
-    if (distanceType == "CAN") {
+    else if (distanceType == "CAN") {
         return computeCanberraDistance(m_v1, m_v2);
     }
-    if (distanceType == "MIN") {
+    else if (distanceType == "MIN") {
         return computeMinkowskiDistance(m_v1, m_v2);
 
+    }
+    else {
+        exit(1);
     }
 }
 
