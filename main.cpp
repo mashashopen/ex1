@@ -4,12 +4,10 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
-#include "Distance.h"
 #include <iterator>
 #include <string>
 #include "ReadDataSet.h"
 #include "Knn.h"
-#include <algorithm>
 
 #include <stdlib.h>
 
@@ -133,14 +131,16 @@ int main(int argc, char* argv[])
 
      //get input vector and use knn model forever
      while (true) {
-         // the vector to classified: 
-         vector<double> v1 = getVectorAsInput();
+         // the vector to classify: 
+         vector<double> v = getVectorAsInput();
 
          ReadDataSet classified(file);
-         vector<vector<string>> fileContent = classified.readFile();
-         map<vector<double>, string> mappedData = classified.createMapOfData(fileContent);
+         vector<vector<string>> fileContent = classified.readFile(); //read file
+         //separate data to vector -> label
+         map<vector<double>, string> mappedData = classified.createMapOfData(fileContent); 
 
-         Knn knnModel(v1, k, disMetric, mappedData);
+         //create knn model
+         Knn knnModel(v, k, disMetric, mappedData);
 
          cout << knnModel.predict() << endl;
      }
