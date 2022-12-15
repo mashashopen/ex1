@@ -85,4 +85,3 @@ map<double, string> Knn::FindKnearest() {
 		}	
 		return predictedLable;
 	}
-
