@@ -59,6 +59,12 @@ vector<double> getVectorAsInput() {
     return v;
 }
 
+/*
+* checks if string is actully a integer number.
+*
+* @param s,the string to check.
+* @return true if it is integer, false otherwise.
+*/
 bool isNumber(const string& s)
 {
     for (char const& ch : s) {
@@ -71,7 +77,7 @@ bool isNumber(const string& s)
 /*
 * command line args validation.
 *
-* @param
+* @param argc, argv, k, file, disMetirc- all arguments from cmd.
 * @return true if all args are valid and false otherwise.
 */
 bool areValidArguments(int argc,char* argv[],int& k, string& file, string& disMetric) {

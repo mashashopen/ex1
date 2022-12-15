@@ -8,9 +8,12 @@
 
 using namespace std;
 
-
+/*
+* this function reads the data from the file that user ask for.
+*
+* @return vectors so that each vector consists of numbers.
+*/
 vector<vector<string>> ReadDataSet:: readFile() {
-    //string fname = "datasets/wine/wine_Classified.csv";
 
 	vector<vector<string>> content;
 	vector<string> row;
@@ -34,8 +37,13 @@ vector<vector<string>> ReadDataSet:: readFile() {
 	return content;
 }
 
-// map all vectors into vector -> label
 
+/*
+* this function maps files content into vector -> label
+*
+* @param vectors so that each vector consists of numbers.
+* @return map so that the key is vector and the value is the lable.
+*/
 map<vector<double>, string> ReadDataSet:: createMapOfData(vector<vector<string>> fileContent)
 {
 	map<vector<double>, string> classified;
@@ -63,5 +71,3 @@ map<vector<double>, string> ReadDataSet:: createMapOfData(vector<vector<string>>
 
 	return classified;
 }
-
-
