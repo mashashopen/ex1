@@ -7,7 +7,7 @@ ReadDataSet.o: ReadDataSet.cpp ReadDataSet.h
 	g++ -std=c++11 -c ReadDataSet.cpp
 Distance.o: Distance.cpp Distance.h
 	g++ -std=c++11 -c Distance.cpp
-Knn.o: Knn.cpp Knn.h Distance.h
-	g++ -std=c++11 -c Knn.cpp
+Knn.o: KNN.cpp Knn.h Distance.h
+	g++ -std=c++11 -c KNN.cpp
 clean:
 	rm *.o output
