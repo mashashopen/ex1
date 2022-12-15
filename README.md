@@ -1,4 +1,4 @@
-"# ex1" 
+"# ex2" 
 
 =============================== Short Description Of The Project =============================== 
 
@@ -55,7 +55,7 @@ example 2:
 * 3.4 7 6 3.1 2.9 4.1 4 7.8 9 6.5 1.1 1.2 3.4
 
 output: 
-*white wine
+* white wine
 
 
 example 3:
@@ -63,8 +63,16 @@ example 3:
 * 1 6 7
   
  output: 
- invalid input!
+* invalid input!
  (reason: the vector input is not in the same size of vectors from beans dataset, should be size=16)
+ 
+ 
+ 
+ =============================== Cloning ===============================
+ 
+First, we used the same repository from ex1 (part 1). The current assignment is on branch "ex2". Because the previous exercise wasn't checked yet, we didn't merge this branch to "main" branch. Therefore, in order to get the code of the current assignment, please clone the "ex2" branch ONLY, using this command:
+
+  * git clone --branch "ex2" https://github.com/mashashopen/ex1.git
 
 
  =============================== Compiling Command ===============================
@@ -73,4 +81,7 @@ example 3:
 
 
  =============================== Running Command ===============================
-  * ./a.out 
+
+ * ./a.out \<k> <file_path> <distance_type>
+  
+   for example:  ./a.out 3 iris_classified.csv CAN
