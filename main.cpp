@@ -4,16 +4,17 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
-#include "Distance.h"
 #include <iterator>
 #include <string>
+#include "ReadDataSet.h"
+#include "Knn.h"
 
-
+#include <stdlib.h>
 
 using namespace std;
 
 /*
-* checks if input is not valid.
+* checks if input (vector) is not valid.
 *
 * @param s, string represent future vector.
 * @return true if is not valid, false otherwise.
@@ -58,31 +59,97 @@ vector<double> getVectorAsInput() {
     return v;
 }
 
-int main()
+/*
+* checks if string is actully a integer number.
+*
+* @param s,the string to check.
+* @return true if it is integer, false otherwise.
+*/
+bool isNumber(const string& s)
+{
+    for (char const& ch : s) {
+        if (std::isdigit(ch) == 0)
+            return false;
+    }
+    return true;
+}
+
+/*
+* command line args validation.
+*
+* @param argc, argv, k, file, disMetirc- all arguments from cmd.
+* @return true if all args are valid and false otherwise.
+*/
+bool areValidArguments(int argc,char* argv[],int& k, string& file, string& disMetric) {
+    /*argv:
+    1. k number 
+    2. the dataset file
+    3. the distance metric type
+    */
+    bool valid = true;
+
+     //corrcet number of args:
+    if (argc == 4){
+        //checking if first arg is an integter (k number)
+        if (!isNumber(argv[1]) || strtol(argv[1], NULL, 10) <= 0) {
+            valid = false;
+        }
+
+        //checking if third arg is correct string of distance metric:
+        string distType = argv[3];
+        if (!(distType == "AUC" || distType == "MAN" || distType == "CHB" || distType == "CAN" || distType == "MIN")) {
+            valid = false;
+        }
+    }
+    else if (argc > 4) {
+        cout << "Too many arguments supplied.\n";
+        valid = false;
+    }
+    else{ //(argc < 4)
+        cout << "Missing arguments.\n";
+        valid = false;
+    }
+    return valid;
+
+  
+}
+
+
+int main(int argc, char* argv[])
 {
 
-    vector<double> v1 = getVectorAsInput();
-    vector<double> v2 = getVectorAsInput();
+    int k;
+    string disMetric;
+    string file;
 
-    // input validation of 2 vectors:
-    // case 3: vectors are in different length:
-    if (v1.size() != v2.size())
+    //checking input from command line...
+    if (!(areValidArguments(argc, argv, k, file, disMetric)))
     {
-        cout << "invalid input!";
-            exit(1);
+        cout << "invalid input!" << endl;
+        exit(1);
     }
- 
-        Distance manhattan(v1, v2, &computeManhattanDistance);
-        Distance chebyshev(v1, v2, &computeChebyshevDistance);
-        Distance minkowski(v1, v2, &computeMinkowskiDistance);
-        Distance euclidean(v1, v2, &computeEuclideanDistance);
-        Distance canberra(v1, v2, &computeCanberraDistance);
 
-    euclidean.printDistance();
-    manhattan.printDistance();
-    chebyshev.printDistance();
-    canberra.printDistance();
-    minkowski.printDistance();
+    //after validation- set the args:
+     k = strtol(argv[1], NULL, 10);
+     file = argv[2];
+     disMetric = argv[3];
+    
+
+     //get input vector and use knn model forever
+     while (true) {
+         // the vector to classify: 
+         vector<double> v = getVectorAsInput();
+
+         ReadDataSet classified(file);
+         vector<vector<string>> fileContent = classified.readFile(); //read file
+         //separate data to vector -> label
+         map<vector<double>, string> mappedData = classified.createMapOfData(fileContent); 
+
+         //create knn model
+         Knn knnModel(v, k, disMetric, mappedData);
+
+         cout << knnModel.predict() << endl;
+     }
 
     return 0;
 }

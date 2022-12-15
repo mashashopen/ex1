@@ -6,6 +6,21 @@
 #include <string>
 
 /*
+* input validation of 2 vectors.
+* in case vectors are in different length, the program will end.
+* 
+* @param v1, v2- vectors to check.
+*/
+void Distance::validationOfTwoVec(vector<double> v1, vector<double> v2) {
+
+   if (v1.size() != v2.size())
+   {
+       cout << "invalid input!";
+           exit(1);
+   }
+ }
+
+/*
 * checks if number is whole.
 * 
 * @return true if is whole, false otherwise.
@@ -29,7 +44,43 @@ void Distance::printDistance() {
 	}
 }
 
-//calculation for all the wanted distances:
+/*
+* this function sets the distance metric according to the input.
+*
+* @param distanceType the string represent the distance metric
+* @return the right compute distance function.
+*/
+double Distance::setRightDistanceFunction(string distanceType) {
+    if (distanceType == "AUC") {
+        return computeEuclideanDistance(m_v1, m_v2);
+    }
+    else if (distanceType == "MAN") {
+        return computeManhattanDistance(m_v1, m_v2);
+    }
+    else if (distanceType == "CHB") {
+        return computeChebyshevDistance(m_v1, m_v2);
+    }
+    else if (distanceType == "CAN") {
+        return computeCanberraDistance(m_v1, m_v2);
+    }
+    else if (distanceType == "MIN") {
+        return computeMinkowskiDistance(m_v1, m_v2);
+
+    }
+    else {
+        exit(1);
+    }
+}
+
+/*
+* this function return the distance value.
+*
+* @return the distance value.
+*/
+double Distance::getDistanceValue() {
+    return m_distanceValue;
+}
+
 
 /*
 * Chebyshev distance.
