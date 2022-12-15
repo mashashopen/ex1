@@ -135,15 +135,15 @@ int main(int argc, char* argv[])
      disMetric = argv[3];
     
 
+     ReadDataSet classified(file);
+     vector<vector<string>> fileContent = classified.readFile(); //read file
+     //separate data to vector -> label
+     map<vector<double>, string> mappedData = classified.createMapOfData(fileContent);
+
      //get input vector and use knn model forever
      while (true) {
          // the vector to classify: 
          vector<double> v = getVectorAsInput();
-
-         ReadDataSet classified(file);
-         vector<vector<string>> fileContent = classified.readFile(); //read file
-         //separate data to vector -> label
-         map<vector<double>, string> mappedData = classified.createMapOfData(fileContent); 
 
          //create knn model
          Knn knnModel(v, k, disMetric, mappedData);
