@@ -67,7 +67,12 @@ example 3:
  (reason: the vector input is not in the same size of vectors from beans dataset, should be size=16)
  
  
-first, we used the same repository from ex1 (part 1). the current assignment is on branch "ex2". Because the previous excersise wasn't checked yet, we didn't merge this branch to "main". Therefore, in order to get the code of the current assignment, please clone the "ex2" branch ONLY, using this command:
+ 
+ 
+First, we used the same repository from ex1 (part 1). The current assignment is on branch "ex2". Because the previous exercise wasn't checked yet, we didn't merge this branch to "main" branch. Therefore, in order to get the code of the current assignment, please clone the "ex2" branch ONLY, using this command:
+
+  * git clone --branch "ex2" https://github.com/mashashopen/ex1.git
+
 
  =============================== Compiling Command ===============================
 
@@ -75,8 +80,7 @@ first, we used the same repository from ex1 (part 1). the current assignment is 
 
 
  =============================== Running Command ===============================
-  * git clone --branch "ex2" https://github.com/mashashopen/ex1.git
 
-    ./a.out <k> <file_path> <distance_type>
+ * ./a.out <k> <file_path> <distance_type>
   
-    for example:  ./a.out 3 iris_classified.csv CAN
+   for example:  ./a.out 3 iris_classified.csv CAN
