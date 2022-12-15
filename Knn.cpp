@@ -20,14 +20,9 @@ map<double, string> Knn:: CalculateDistance() {
 	for (it = m_mappedClassifiedData.begin(); it != m_mappedClassifiedData.end(); it++)
 	{
 		vector<double> classifiedVector = it->first;
-		try {
-			Distance d(m_v, classifiedVector, m_distanceType);
-			distanceLabel[d.getDistanceValue()] = it->second;
-		}
-		catch (...) {
-			cout << "file doesn't contain vectors and labels" << endl;
-			exit(1);
-		}
+		Distance d(m_v, classifiedVector, m_distanceType);
+		distanceLabel[d.getDistanceValue()] = it->second;
+		
 	}
 
 	return distanceLabel;
