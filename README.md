@@ -68,6 +68,7 @@ example 3:
  
  
  
+ =============================== Cloning ===============================
  
 First, we used the same repository from ex1 (part 1). The current assignment is on branch "ex2". Because the previous exercise wasn't checked yet, we didn't merge this branch to "main" branch. Therefore, in order to get the code of the current assignment, please clone the "ex2" branch ONLY, using this command:
 
