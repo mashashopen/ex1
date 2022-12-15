@@ -82,6 +82,6 @@ First, we used the same repository from ex1 (part 1). The current assignment is 
 
  =============================== Running Command ===============================
 
- * ./a.out <\k> <file_path> <distance_type>
+ * ./a.out \<k> <file_path> <distance_type>
   
    for example:  ./a.out 3 iris_classified.csv CAN
