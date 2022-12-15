@@ -8,7 +8,8 @@
 /*
 * input validation of 2 vectors.
 * in case vectors are in different length, the program will end.
-*
+* 
+* @param v1, v2- vectors to check.
 */
 void Distance::validationOfTwoVec(vector<double> v1, vector<double> v2) {
 
@@ -43,6 +44,12 @@ void Distance::printDistance() {
 	}
 }
 
+/*
+* this function sets the distance metric according to the input.
+*
+* @param distanceType the string represent the distance metric
+* @return the right compute distance function.
+*/
 double Distance::setRightDistanceFunction(string distanceType) {
     if (distanceType == "AUC") {
         return computeEuclideanDistance(m_v1, m_v2);
@@ -65,11 +72,15 @@ double Distance::setRightDistanceFunction(string distanceType) {
     }
 }
 
+/*
+* this function return the distance value.
+*
+* @return the distance value.
+*/
 double Distance::getDistanceValue() {
     return m_distanceValue;
 }
 
-//calculation for all the wanted distances:
 
 /*
 * Chebyshev distance.

@@ -9,8 +9,11 @@
 
 using namespace std;
 
-
-/// calculate the distance between vector input to all classified vectros:
+/*
+* this function calculate the distance between vector input to all classified vectros.
+*
+* @return map so that the key is the distance value and the value is the lable. 
+*/
 map<double, string> Knn:: CalculateDistance() {
 	map<double, string, less<double>> distanceLabel;
 	map<vector<double>, string>::iterator it;
@@ -25,7 +28,11 @@ map<double, string> Knn:: CalculateDistance() {
 }
 
 
-	// finding the k nearest vectors to the vector input :
+/*
+* this function finds the k nearest vectors to the vector input.
+*
+* @return map so that the key is the distance value and the value is the lable (of all k nearwst vectors).
+*/
 map<double, string> Knn::FindKnearest() {
 		///the distanceLabel map created in CalculateDistance is already sorted,
 		// we now need to take k first values :
@@ -43,7 +50,11 @@ map<double, string> Knn::FindKnearest() {
 	}
 
 
-
+/*
+* this function predict the label of the input vector .
+*
+* @return the predicted label of the vector.
+*/
 	string Knn::predict() {
 		//// now we have the map of k nearest vectors to our input vector. we need check which label 
 		//// got the "higher score"--> that will be the predicted class of out input.
@@ -72,5 +83,9 @@ map<double, string> Knn::FindKnearest() {
 			}
 		}	
 		return predictedLable;
+<<<<<<< HEAD:KNN.cpp
+	}
+=======
 	}
 	//check
+>>>>>>> 9aba2048018c69e9e33ae6a7545cee1fa560b915:Knn.cpp
