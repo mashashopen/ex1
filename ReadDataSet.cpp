@@ -31,8 +31,10 @@ vector<vector<string>> ReadDataSet:: readFile() {
 			content.push_back(row);
 		}
 	}
-	else
+	else {
 		cout << "Could not open the file\n";
+		exit(1);
+	}
 
 	return content;
 }
