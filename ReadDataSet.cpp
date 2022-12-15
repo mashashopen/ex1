@@ -8,6 +8,8 @@
 
 using namespace std;
 
+
+
 /*
 * this function reads the data from the file that user ask for.
 *
@@ -26,8 +28,9 @@ vector<vector<string>> ReadDataSet:: readFile() {
 
 			stringstream str(line);
 
-			while (getline(str, word, ','))
+			while (getline(str, word, ',')) {
 				row.push_back(word);
+			}
 			content.push_back(row);
 		}
 	}
@@ -50,17 +53,31 @@ map<vector<double>, string> ReadDataSet:: createMapOfData(vector<vector<string>>
 	string number;
 	string label;
 
+	// check if row doesnt contain vector and label (at leat 2 elements)
+	if (fileContent.size() == 0) {
+		cout << "not valid content" << endl;
+		exit(1);
+	}
+
 	for (int i = 0;i < fileContent.size();i++) {
+		// check if row doesnt contain vector and label (at leat 2 elements)
+		if (fileContent[i].size() == 1) {
+			cout << "not valid content" << endl;
+			exit(1);
+		}
 		numbers.clear();
 		for (int j = 0;j < fileContent[i].size();j++) {
-			if (fileContent[i].size() <= 1) {
-				cout << "not valid contect" << endl;
-				exit(1);
-			}
+			
 			if (j != fileContent[i].size() - 1) {
-				number = fileContent[i][j];
-				double number_d = stod(number);
-				numbers.push_back(number_d);
+				try {
+					number = fileContent[i][j];
+					double number_d = stod(number);
+					numbers.push_back(number_d);
+				}
+				catch (...){
+					cout << "not valid content" << endl;
+					exit(1);
+				}
 			}
 			else {
 				label = fileContent[i][j];
