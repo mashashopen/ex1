@@ -29,7 +29,7 @@ bool inputIsNotValid(string s) {
     // case 2: dealing with chars
     for (int i = 0; i < s.size(); i++)
     {
-        if (s[i] == char()) {
+        if (isalpha(s[i])) {
             return true;
         }
     }
