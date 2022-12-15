@@ -4,7 +4,7 @@
 
 first, the program get 3 arguments from command line, so that:
 first argument is an integer number (k) that represent the number of neighbors for knn algorithm.
-second argument is the path of the classified vectors file.
+second argument is the path of the classified vectors file. those files consist of vector of numbers (whole numbers or doubles) and their label.
 third argument is the compute distance metic to use in the knn algorithm. one of the followong:
 - euclidean
 - manhattan

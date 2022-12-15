@@ -31,10 +31,6 @@ vector<vector<string>> ReadDataSet:: readFile() {
 			content.push_back(row);
 		}
 	}
-	else {
-		cout << "Could not open the file\n";
-		exit(1);
-	}
 
 	return content;
 }
@@ -57,6 +53,10 @@ map<vector<double>, string> ReadDataSet:: createMapOfData(vector<vector<string>>
 	for (int i = 0;i < fileContent.size();i++) {
 		numbers.clear();
 		for (int j = 0;j < fileContent[i].size();j++) {
+			if (fileContent[i].size() <= 1) {
+				cout << "not valid contect" << endl;
+				exit(1);
+			}
 			if (j != fileContent[i].size() - 1) {
 				number = fileContent[i][j];
 				double number_d = stod(number);

@@ -22,6 +22,7 @@ map<double, string> Knn:: CalculateDistance() {
 		vector<double> classifiedVector = it->first;
 		Distance d(m_v, classifiedVector, m_distanceType);
 		distanceLabel[d.getDistanceValue()] = it->second;
+		
 	}
 
 	return distanceLabel;
