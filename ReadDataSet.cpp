@@ -59,8 +59,13 @@ map<vector<double>, string> ReadDataSet:: createMapOfData(vector<vector<string>>
 		for (int j = 0;j < fileContent[i].size();j++) {
 			if (j != fileContent[i].size() - 1) {
 				number = fileContent[i][j];
-				double number_d = stod(number);
-				numbers.push_back(number_d);
+				try {
+					double number_d = stod(number);
+					numbers.push_back(number_d);
+				}
+				catch (...) {
+					cout << "file doesn't contain vectors and labels" << endl;
+				}
 			}
 			else {
 				label = fileContent[i][j];
