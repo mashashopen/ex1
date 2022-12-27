@@ -114,7 +114,7 @@ bool areValidArguments(int argc,char* argv[],int& k, string& file, string& disMe
   
 }
 
-
+/*/
 int main(int argc, char* argv[])
 {
 
@@ -153,3 +153,4 @@ int main(int argc, char* argv[])
 
     return 0;
 }
+*/
