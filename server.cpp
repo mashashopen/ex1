@@ -1,4 +1,18 @@
+#include <iostream>
+#include <string.h>
+
+#include <vector>
 #include <string>
+
+#include <sys/socket.h>
+#include <stdio.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <string.h>
+
+using namespace std;
+
 int main(){
 
     string file = "";
@@ -32,10 +46,12 @@ int main(){
     int expected_data_len = sizeof(buffer);
     int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
     if (read_bytes == 0){
-    // connection is closed }
+    // connection is closed
+    }
     else if (read_bytes < 0)
     {
-    // error }
+    // error
+    }
     else{
         cout << buffer;
     }

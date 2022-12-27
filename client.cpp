@@ -12,28 +12,16 @@
 using namespace std;
 
 int main(){
-    //const char;
-    /**ip_address = "127.0.0.1";
+    const char* ip_address = "127.0.0.1";
     const int port_no = 5555;
-    int sock = socket(AF_INET, SOCK_STREAM,0);**/
+    int sock = socket(AF_INET, SOCK_STREAM,0);
 
-    vector<char> v = {1, 2, 3, 4};
-    //string dist = "MAN";
-    //int k = 3;
+    string t = "1 2 3 4 MAN 3";     //this we will receive as input from user
+    char const *data_addr = t.c_str();
 
-    char* a = &v[0];
-
-    cout << 1 << endl;
     
-    /*
-    char data_addr[]
-
-
-
-
-
     if (sock < 0){
-    perror("error creating socket");
+        perror("error creating socket");
     }
 
     struct sockaddr_in sin;
@@ -43,25 +31,29 @@ int main(){
     sin.sin_port = htons(port_no);
 
     if (connect(sock, (struct sockaddr*)&sin, sizeof(sin)) < 0){
-    perror("error connecting to server");
+        perror("error connecting to server");
     }
 
-    char data_addr[] = "Im a message";
     int data_len = strlen(data_addr);
     int sent_bytes = send(sock, data_addr, data_len, 0);
 
     if (sent_bytes < 0){
     // error }
-    char buffer[4096];
-    int expected_data_len = sizeof(buffer);
-    int read_bytes = recv(sock, buffer, expected_data_len, 0);
-    if (read_bytes == 0){
-    // connection is closed }
-    else if (read_bytes < 0){
-    // error }
-    else{
-    cout << buffer;
+        char buffer[4096];
+        int expected_data_len = sizeof(buffer);
+        int read_bytes = recv(sock, buffer, expected_data_len, 0);
+        if (read_bytes == 0){
+        // connection is closed
     }
-    close(sock);*/
+    else if (read_bytes < 0){
+    // error
+    }
+    else{
+        cout << buffer;
+    }
+    close(sock);
     
 }
+return 0;
+}
+
