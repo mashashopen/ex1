@@ -8,19 +8,91 @@
 
 #include <vector>
 #include <string>
+#include <iterator>
+#include <sstream>
 
 using namespace std;
 
-int main(){
-    const char* ip_address = "127.0.0.1";
-    const int port_no = 5555;
-    int sock = socket(AF_INET, SOCK_STREAM,0);
+bool vectorInputIsNotValid(string s) {
+    // case 1: empty input
+    if (s.size() == 0) {
 
-    string t = "1 2 3 4 MAN 3";     //this we will receive as input from user
+        return true;
+    }
+
+    // case 2: dealing with chars
+    for (int i = 0; i < s.size(); i++) {
+        if (isalpha(s[i])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/*
+* checks if string is actully a integer number.
+*
+* @param s,the string to check.
+* @return true if it is integer, false otherwise.
+*/
+bool isNumber(const string &s) {
+    for (char const &ch: s) {
+        if (std::isdigit(ch) == 0)
+            return false;
+    }
+    return true;
+}
+
+
+string getInputFromUser() {
+    string s;
+    cin >> s;
+
+    const char *possibleMetrics[5] = {"MAN", "CHB", "AUC", "CAN", "MIN"};
+    size_t found;
+
+    for (int i = 0; i < sizeof(possibleMetrics); i++) {
+        found = s.find(possibleMetrics[i]);
+        if (found > 0) {
+            break;
+        }
+    }
+    string subVector = s.substr(0, found);
+    //vector validation:
+    if (vectorInputIsNotValid(subVector)) {
+        cout << "invalid input!";
+        //how to return and get another input?
+    }
+
+    string disMetric = s.substr(found, 3);
+
+    string subK = s.substr(found + 4);
+    //k validation:
+    if (!(isNumber(subK))) {
+        cout << "invalid input!";
+        //how to return and get another input?
+    }
+
+    return s;
+}
+
+int main(int argc, char *argv[]) {
+    const char *ip_address = argv[1];
+    const int port_no = stoi(argv[2]);
+
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+
+    //string t = "1 2 3 4 MAN 3";     //this we will receive as input from user
+    //char const *data_addr = t.c_str();
+
+    string t = getInputFromUser();
     char const *data_addr = t.c_str();
 
-    
-    if (sock < 0){
+    // forever loop to get input from user:
+
+
+/*
+    if (sock < 0) {
         perror("error creating socket");
     }
 
@@ -30,30 +102,30 @@ int main(){
     sin.sin_addr.s_addr = inet_addr(ip_address);
     sin.sin_port = htons(port_no);
 
-    if (connect(sock, (struct sockaddr*)&sin, sizeof(sin)) < 0){
+    if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("error connecting to server");
     }
 
     int data_len = strlen(data_addr);
     int sent_bytes = send(sock, data_addr, data_len, 0);
 
-    if (sent_bytes < 0){
-    // error }
+    if (sent_bytes < 0) {
+        // error }
         char buffer[4096];
         int expected_data_len = sizeof(buffer);
         int read_bytes = recv(sock, buffer, expected_data_len, 0);
-        if (read_bytes == 0){
-        // connection is closed
+        if (read_bytes == 0) {
+            // connection is closed
+        } else if (read_bytes < 0) {
+            // error
+        } else {
+            cout << buffer;
+        }
+        close(sock);
+
     }
-    else if (read_bytes < 0){
-    // error
-    }
-    else{
-        cout << buffer;
-    }
-    close(sock);
-    
-}
-return 0;
+    return 0;
+
+    */
 }
 
