@@ -48,7 +48,7 @@ bool inputIsNotValid(string s) {
 * @param s, string from user.
 * @return v,the vector .
 */
-vector<double> sringToVector(string s) {
+vector<double> stringToVector(string s) {
 
     if (inputIsNotValid(s)){
         cout << "invalid input!";
@@ -88,65 +88,68 @@ int main() {
         perror("error binding socket");
     }
 
-    if (listen(sock, 5) < 0) {
-        perror("error listening to a socket");
-    }
+    while (true){
 
-    struct sockaddr_in client_sin;
-    unsigned int addr_len = sizeof(client_sin);
-    int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
+            if (listen(sock, 5) < 0) {
+                perror("error listening to a socket");
+            }
 
-    if (client_sock < 0) {
-        perror("error accepting client");
-    }
+            struct sockaddr_in client_sin;
+            unsigned int addr_len = sizeof(client_sin);
+            int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
 
-    char buffer[4096];
-    int expected_data_len = sizeof(buffer);
-    int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
+            if (client_sock < 0) {
+                perror("error accepting client");
+            }
 
-    string s;
-    string distMetric;
-    int k;
+            char buffer[4096];
+            int expected_data_len = sizeof(buffer);
+            int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
 
-    // convert array to string
-    for (int i = 0; i < expected_data_len; i++) {
-        s = s + buffer[i];
-    }
+            string s;
+            string distMetric;
+            int k;
 
-    size_t found;
+            // convert array to string
+            for (int i = 0; i < expected_data_len; i++) {
+                s = s + buffer[i];
+            }
+
+            size_t found;
 
 
-    for (string disMetric: Distance::possibleMetrics()) {
-        found = s.find(disMetric);
-        if (found > 0 && found < s.length()) { // found the index of the metric inside the input
-            break;
+            for (string disMetric: Distance::possibleMetrics()) {
+                found = s.find(disMetric);
+                if (found > 0 && found < s.length()) { // found the index of the metric inside the input
+                    break;
+                }
+            }
+            // parse the string into vector, distance metric and k
+
+            string subVector = s.substr(0, found);
+            distMetric = s.substr(found, 3);
+
+            string subK = s.substr(found + 4);
+
+            vector<double> v = stringToVector(subVector);
+            k = stoi(subK);
+
+            Knn knnModel(v, k, distMetric, mappedData);
+
+            if (read_bytes == 0) {
+                cout << "connection is closed" << endl;
+            } else if (read_bytes < 0) {
+                cout << "error" << endl;
+            } else {
+                cout << buffer;
+            }
+            const char *classResult = knnModel.predict().c_str();
+            cout << classResult << endl;
+            int sent_bytes = send(client_sock, classResult, read_bytes, 0);
+            if (sent_bytes < 0) {
+                perror("error sending to client");
+            }
         }
-    }
-    // parse the string into vector, distance metric and k
-
-    string subVector = s.substr(0, found);
-    distMetric = s.substr(found, 3);
-
-    string subK = s.substr(found + 4);
-
-    vector<double> v = sringToVector(subVector);
-    k = stoi(subK);
-
-    Knn knnModel(v, k, distMetric, mappedData);
-
-    if (read_bytes == 0) {
-        cout << "connection is closed" << endl;
-    } else if (read_bytes < 0) {
-        cout << "error" << endl;
-    } else {
-        cout << buffer;
-    }
-    const char *classResult = knnModel.predict().c_str();
-    cout << classResult << endl;
-    int sent_bytes = send(client_sock, classResult, read_bytes, 0);
-    if (sent_bytes < 0) {
-        perror("error sending to client");
-    }
     close(sock);
     return 0;
 }
