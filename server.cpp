@@ -89,37 +89,39 @@ int main(int argc, char *argv[]) {
         perror("error binding socket");
     }
 
-    while (true){
+    while (true) {
 
-            if (listen(sock, 5) < 0) {
-                perror("error listening to a socket");
-            }
+        if (listen(sock, 5) < 0) {
+            perror("error listening to a socket");
+        }
 
-            struct sockaddr_in client_sin;
-            unsigned int addr_len = sizeof(client_sin);
-            int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
+        struct sockaddr_in client_sin;
+        unsigned int addr_len = sizeof(client_sin);
+        int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
 
-            if (client_sock < 0) {
-                perror("error accepting client");
-            }
+        if (client_sock < 0) {
+            perror("error accepting client");
+        }
 
-            char buffer[4096];
-            int expected_data_len = sizeof(buffer);
-            int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
+        char buffer[4096];
+        int expected_data_len = sizeof(buffer);
+        int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
 
-            string s;
+        string s;
 
-            // convert array to string
-            for (int i = 0; i < expected_data_len; i++) {
-                s = s + buffer[i];
-            }
+        // convert array to string
+        for (int i = 0; i < expected_data_len; i++) {
+            s = s + buffer[i];
+        }
 
-            ParseAndValidate input(s);
+        ParseAndValidate input(s);
 
-            // parse the string into vector, distance metric and k
-            string distMetric = input.getDistMetric();
-            vector<double> v = input.getVector();
-            int k = input.getK();
+        // parse the string into vector, distance metric and k
+        string distMetric = input.getDistMetric();
+        vector<double> v = input.getVector();
+        int k = input.getK();
+
+        if(input.isValidInput()){
 
             Knn knnModel(v, k, distMetric, mappedData);
 
@@ -128,15 +130,17 @@ int main(int argc, char *argv[]) {
             } else if (read_bytes < 0) {
                 cout << "error" << endl;
             } else {
-                cout << buffer;
-            }
-            const char *classResult = knnModel.predict().c_str();
-            cout << classResult << endl;
-            int sent_bytes = send(client_sock, classResult, read_bytes, 0);
-            if (sent_bytes < 0) {
-                perror("error sending to client");
+
+                const char *classResult = knnModel.predict().c_str();
+                cout << classResult << endl;
+                int sent_bytes = send(client_sock, classResult, read_bytes, 0);
+                if (sent_bytes < 0) {
+                    perror("error sending to client");
+                }
             }
         }
+    }
+
     close(sock);
     return 0;
 }
