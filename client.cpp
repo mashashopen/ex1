@@ -44,7 +44,6 @@ bool isNumber(const string &s) {
     return true;
 }
 
-
 string getInputFromUser() {
     string s;
     getline(cin, s);

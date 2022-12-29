@@ -13,11 +13,13 @@ class ParseAndValidate {
 
     string m_input;
     size_t m_idxOfDist;
+    bool m_isValidInput;
 
 public:
     ParseAndValidate(string input){
         m_input = input;
         m_idxOfDist = getIdxOfMetric();
+        m_isValidInput = true;
     }
 
     int getK();
@@ -25,9 +27,12 @@ public:
     string getDistMetric();
     size_t getIdxOfMetric();
 
-    bool stringVectorIsNotValid(string s);
+    //need to make private:
+
+    bool stringVectorIsValid(string s);
     bool isNumber(const string &s);
     bool isValidMetric();
+    bool isValidInput();
 
 };
 

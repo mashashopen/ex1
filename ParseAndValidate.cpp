@@ -23,7 +23,7 @@ int ParseAndValidate::getK(){
     // need to change the 1 value!!!!! still dont know how
     string subK = m_input.substr(m_idxOfDist + 4, 1); //dist metric is size of 3
     if(!isNumber(subK)){
-        cout << "invalid input!";
+        m_isValidInput = false;
         return -1;
     }
     else{
@@ -33,11 +33,13 @@ int ParseAndValidate::getK(){
 
 
 vector<double> ParseAndValidate::getVector(){
+
     string subVector = m_input.substr(0, m_idxOfDist);
 
-    if (stringVectorIsNotValid(subVector)){
-        cout << "invalid input!";
-        exit(1);
+    if (!stringVectorIsValid(subVector)){
+        m_isValidInput = false;
+        vector<double> emptyVector;
+        return emptyVector;
     }
 
     istringstream is(subVector);
@@ -51,27 +53,28 @@ vector<double> ParseAndValidate::getVector(){
 
 string ParseAndValidate::getDistMetric(){
     if(!isValidMetric()){
-        cout << "invalid input!";
-        exit(1);
+        m_isValidInput = false;
+        string s;
+        return s;
     }
 
     string distMetric = m_input.substr(m_idxOfDist, 3);
     return distMetric;
 }
 
-bool ParseAndValidate::stringVectorIsNotValid(string s) {
+bool ParseAndValidate::stringVectorIsValid(string s) {
     // case 1: empty input
     if (s.size() == 0){
-        return true;
+        m_isValidInput = false;
     }
 
     // case 2: dealing with chars
     for (int i = 0; i < s.size(); i++){
         if (isalpha(s[i])) {
-            return true;
+            m_isValidInput = false;
         }
     }
-    return false;
+    return m_isValidInput;
 }
 
 /*
@@ -90,3 +93,8 @@ bool ParseAndValidate::isNumber(const string &s) {
 bool ParseAndValidate::isValidMetric(){
     return (m_idxOfDist > 0 && m_idxOfDist < m_input.length());
 }
+
+bool ParseAndValidate::isValidInput(){
+    return m_isValidInput;
+}
+
