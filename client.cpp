@@ -31,7 +31,7 @@ bool vectorInputIsNotValid(string s) {
 }
 
 /*
-* checks if string is actully a integer number.
+* checks if string is actually a integer number.
 *
 * @param s,the string to check.
 * @return true if it is integer, false otherwise.
@@ -81,16 +81,11 @@ int main(int argc, char *argv[]) {
 
     int sock = socket(AF_INET, SOCK_STREAM, 0);
 
-    //string t = "1 2 3 4 MAN 3";     //this we will receive as input from user
-    //char const *data_addr = t.c_str();
-
     string t = getInputFromUser();
     char const *data_addr = t.c_str();
 
     // forever loop to get input from user:
 
-
-/*
     if (sock < 0) {
         perror("error creating socket");
     }
@@ -109,22 +104,21 @@ int main(int argc, char *argv[]) {
     int sent_bytes = send(sock, data_addr, data_len, 0);
 
     if (sent_bytes < 0) {
-        // error }
-        char buffer[4096];
-        int expected_data_len = sizeof(buffer);
-        int read_bytes = recv(sock, buffer, expected_data_len, 0);
-        if (read_bytes == 0) {
-            // connection is closed
-        } else if (read_bytes < 0) {
-            // error
-        } else {
-            cout << buffer;
-        }
-        close(sock);
-
+        // error
     }
+    char buffer[4096];
+    int expected_data_len = sizeof(buffer);
+    int read_bytes = recv(sock, buffer, expected_data_len, 0);
+    if (read_bytes == 0) {
+        // connection is closed
+    }
+    else if (read_bytes < 0) {
+        cout << "error";
+    }
+    else {
+        cout << buffer;
+    }
+    close(sock);
     return 0;
-
-    */
 }
 
