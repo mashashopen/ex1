@@ -19,6 +19,7 @@ using namespace std;
 * @param s, string represent future vector.
 * @return true if is not valid, false otherwise.
 */
+/*
 bool inputIsNotValid(string s) {
     // case 1: empty input
     if (s.size() == 0)
@@ -36,12 +37,13 @@ bool inputIsNotValid(string s) {
     return false;
 }
 
+
 /*
 * get vector as string input.
 *
 * @param s, string from user.
 * @return v,the vector .
-*/
+
 vector<double> getVectorAsInput() {
     string s;
     getline(cin, s);
@@ -58,7 +60,7 @@ vector<double> getVectorAsInput() {
     while (is >> x) v.push_back(x);
     return v;
 }
-
+*/
 /*
 * checks if string is actully a integer number.
 *
@@ -113,8 +115,7 @@ bool areValidArguments(int argc,char* argv[],int& k, string& file, string& disMe
 
   
 }
-
-/*/
+/*
 int main(int argc, char* argv[])
 {
 
@@ -154,3 +155,5 @@ int main(int argc, char* argv[])
     return 0;
 }
 */
+
+

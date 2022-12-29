@@ -21,7 +21,9 @@ vector<vector<string>> ReadDataSet:: readFile() {
 	vector<string> row;
 	string line, word;
 
-	fstream file(m_fileName, ios::in);
+	fstream file;
+    string a = m_fileName;
+    file.open(m_fileName, ios::in);
 	if (file.is_open()) {
 		while (getline(file, line)) {
 			row.clear();

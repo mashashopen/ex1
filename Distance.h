@@ -1,6 +1,6 @@
 #include <vector>
 #include <string>
-
+#include <list>
 using namespace std;
 
 class Distance {
@@ -16,9 +16,10 @@ public:
 		validationOfTwoVec(m_v1, m_v2);
 
 		m_distanceValue = setRightDistanceFunction(type);
-
 		
 	}
+
+    static const list<string> possibleMetrics() { return {"MAN", "CHB", "AUC", "CAN", "MIN"}; }
 	void validationOfTwoVec(vector<double> v1, vector<double> v2);
 	bool isWholeNumber();
 	void printDistance();
