@@ -10,6 +10,7 @@
 #include <string>
 #include <iterator>
 #include <sstream>
+#include "Distance.h"
 
 using namespace std;
 
@@ -46,14 +47,12 @@ bool isNumber(const string &s) {
 
 string getInputFromUser() {
     string s;
-    cin >> s;
-
-    const char *possibleMetrics[5] = {"MAN", "CHB", "AUC", "CAN", "MIN"};
+    getline(cin, s);
     size_t found;
 
-    for (int i = 0; i < sizeof(possibleMetrics); i++) {
-        found = s.find(possibleMetrics[i]);
-        if (found > 0) {
+    for (string s1 :Distance::possibleMetrics()) {
+        found = s.find(s1);
+        if (found > 0 && found < sizeof(s)) {
             break;
         }
     }
