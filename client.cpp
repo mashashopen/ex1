@@ -11,10 +11,17 @@
 #include <iterator>
 #include <sstream>
 #include "Distance.h"
+#include "ParseAndValidate.h"
 
 using namespace std;
 
-bool vectorInputIsNotValid(string s) {
+/*
+* checks if input (vector) is not valid.
+*
+* @param s, string represent future vector.
+* @return true if is not valid, false otherwise.
+*/
+bool inputIsNotValid(string s) {
     // case 1: empty input
     if (s.size() == 0) {
 
@@ -31,47 +38,21 @@ bool vectorInputIsNotValid(string s) {
 }
 
 /*
-* checks if string is actually a integer number.
+* get vector as string input.
 *
-* @param s,the string to check.
-* @return true if it is integer, false otherwise.
+* @param s, string from user.
+* @return v,the vector .
 */
-bool isNumber(const string &s) {
-    for (char const &ch: s) {
-        if (std::isdigit(ch) == 0)
-            return false;
-    }
-    return true;
-}
+vector<double> stringToVector(string s) {
 
-string getInputFromUser() {
-    string s;
-    getline(cin, s);
-    size_t found;
-
-    for (string s1 :Distance::possibleMetrics()) {
-        found = s.find(s1);
-        if (found > 0 && found < sizeof(s)) {
-            break;
-        }
-    }
-    string subVector = s.substr(0, found);
-    //vector validation:
-    if (vectorInputIsNotValid(subVector)) {
+    if (inputIsNotValid(s)) {
         cout << "invalid input!";
-        //how to return and get another input?
+        exit(1);
     }
 
-    string disMetric = s.substr(found, 3);
-
-    string subK = s.substr(found + 4);
-    //k validation:
-    if (!(isNumber(subK))) {
-        cout << "invalid input!";
-        //how to return and get another input?
-    }
-
-    return s;
+    istringstream is(s);
+    vector<double> v((istream_iterator<double>(is)), istream_iterator<double>());
+    double x;
 }
 
 int main(int argc, char *argv[]) {
@@ -79,12 +60,6 @@ int main(int argc, char *argv[]) {
     const int port_no = stoi(argv[2]);
 
     int sock = socket(AF_INET, SOCK_STREAM, 0);
-
-    string t = getInputFromUser();
-    char const *data_addr = t.c_str();
-
-    // forever loop to get input from user:
-
     if (sock < 0) {
         perror("error creating socket");
     }
@@ -99,25 +74,50 @@ int main(int argc, char *argv[]) {
         perror("error connecting to server");
     }
 
-    int data_len = strlen(data_addr);
-    int sent_bytes = send(sock, data_addr, data_len, 0);
+    while (true) {
+        string s;
 
-    if (sent_bytes < 0) {
-        // error
+        //while loop to get another input in case of invalid input:
+        while (true) {
+            getline(cin, s);
+            ParseAndValidate input(s);
+
+            vector<double> inputVec = input.getVector();
+            int inputK = input.getK();
+            string metric = input.getDistMetric();
+
+            if (!input.isValidInput()) {
+                cout << "invalid input!" << endl;
+                continue;
+            } else if (s == "-1") {
+                close(sock);
+                exit(1);
+            } else break;
+        }
+
+        char const *data_addr = s.c_str();
+
+        int data_len = strlen(data_addr);
+        int sent_bytes = send(sock, data_addr, data_len, 0);
+
+        if (sent_bytes < 0) {
+            // error
+        }
+        string label;
+        char buffer[4096];
+        int expected_data_len = sizeof(buffer);
+        int read_bytes = recv(sock, buffer, expected_data_len, 0);
+        if (read_bytes == 0) {
+            // connection is closed
+        } else if (read_bytes < 0) {
+            cout << "error";
+        } else {
+            //print the predicted class of the vector:
+            //convert array to string
+            for (int i = 0; i < expected_data_len; i++) {
+                label = label + buffer[i];
+            }
+            cout << label << endl;
+        }
     }
-    char buffer[4096];
-    int expected_data_len = sizeof(buffer);
-    int read_bytes = recv(sock, buffer, expected_data_len, 0);
-    if (read_bytes == 0) {
-        // connection is closed
-    }
-    else if (read_bytes < 0) {
-        cout << "error";
-    }
-    else {
-        cout << buffer;
-    }
-    close(sock);
-    return 0;
 }
-
