@@ -66,40 +66,38 @@ vector<double> sringToVector(string s) {
 
 
 
-int main(){
+int main() {
 
     string file = "iris_classified.csv";    // need to receive as argument
     ReadDataSet classified(file);
-     vector<vector<string>> fileContent = classified.readFile(); //read file
-     //separate data to vector -> label
-     map<vector<double>, string> mappedData = classified.createMapOfData(fileContent);
-    
+    vector<vector<string>> fileContent = classified.readFile(); //read file
+    //separate data to vector -> label
+    map<vector<double>, string> mappedData = classified.createMapOfData(fileContent);
 
-    /*
     const int server_port = 5555;   // need to receive as argument
     int sock = socket(AF_INET, SOCK_STREAM, 0);
-    if (sock < 0){
-    perror("error creating socket");
+    if (sock < 0) {
+        perror("error creating socket");
     }
     struct sockaddr_in sin;
     memset(&sin, 0, sizeof(sin));
     sin.sin_family = AF_INET;
     sin.sin_addr.s_addr = INADDR_ANY;
     sin.sin_port = htons(server_port);
-    if (bind(sock, (struct sockaddr*) &sin, sizeof(sin)) < 0){
-    perror("error binding socket");
+    if (bind(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
+        perror("error binding socket");
     }
 
-    if (listen(sock, 5) < 0){
-    perror("error listening to a socket");
+    if (listen(sock, 5) < 0) {
+        perror("error listening to a socket");
     }
 
     struct sockaddr_in client_sin;
     unsigned int addr_len = sizeof(client_sin);
-    int client_sock = accept(sock, (struct sockaddr*)&client_sin, &addr_len);
+    int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
 
-    if (client_sock < 0){
-    perror("error accepting client");
+    if (client_sock < 0) {
+        perror("error accepting client");
     }
 
     char buffer[4096];
@@ -107,56 +105,49 @@ int main(){
     int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
 
     string s;
-    string disMetric = "";
-    int k = 3;
+    string distMetric;
+    int k;
 
     // convert array to string
-    for(int i = 0; i < expected_data_len; i++){
+    for (int i = 0; i < expected_data_len; i++) {
         s = s + buffer[i];
-    }*/
-    string s = "1 2 3 4 MAN 3";
+    }
 
-    const char* possibleMetrics[2] = { "MAN", "CHB"};
     size_t found;
 
-    // PARSE THE STRING!!!!
 
-    for (int i = 0; i < sizeof(Distance::possibleMetrics()); i++){
-        found = s.find(possibleMetrics[i]);
-        if (found > 0){
+    for (string disMetric: Distance::possibleMetrics()) {
+        found = s.find(disMetric);
+        if (found > 0 && found < s.length()) { // found the index of the metric inside the input
             break;
         }
     }
-     string subVector = s.substr(0 , found);
-     string disMetric = s.substr(found, 3);
-     
-     string subK = s.substr(found + 4);
+    // parse the string into vector, distance metric and k
 
-     vector<double> v = sringToVector(subVector);
-     int k = stoi(subK);
+    string subVector = s.substr(0, found);
+    distMetric = s.substr(found, 3);
 
+    string subK = s.substr(found + 4);
 
+    vector<double> v = sringToVector(subVector);
+    k = stoi(subK);
 
-    Knn knnModel(v, k, disMetric, mappedData);
-    cout << knnModel.predict()<<endl;
+    Knn knnModel(v, k, distMetric, mappedData);
 
-    /*
-    if (read_bytes == 0){
-    // connection is closed
-    }
-    else if (read_bytes < 0)
-    {
-    // error
-    }
-    else{
+    if (read_bytes == 0) {
+        cout << "connection is closed" << endl;
+    } else if (read_bytes < 0) {
+        cout << "error" << endl;
+    } else {
         cout << buffer;
     }
-    int sent_bytes = send(client_sock, buffer, read_bytes, 0);
-    if (sent_bytes < 0){
-    perror("error sending to client");
+    const char *classResult = knnModel.predict().c_str();
+    cout << classResult << endl;
+    int sent_bytes = send(client_sock, classResult, read_bytes, 0);
+    if (sent_bytes < 0) {
+        perror("error sending to client");
     }
-
     close(sock);
-    */
     return 0;
 }
+
