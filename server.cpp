@@ -15,6 +15,7 @@
 #include "Distance.h"
 #include <sstream>
 #include <iterator>
+#include "ParseAndValidate.h"
 
 using namespace std;
 
@@ -66,15 +67,15 @@ vector<double> stringToVector(string s) {
 
 
 
-int main() {
+int main(int argc, char *argv[]) {
 
-    string file = "iris_classified.csv";    // need to receive as argument
+    string file = argv[1];    // need to receive as argument
     ReadDataSet classified(file);
     vector<vector<string>> fileContent = classified.readFile(); //read file
     //separate data to vector -> label
     map<vector<double>, string> mappedData = classified.createMapOfData(fileContent);
 
-    const int server_port = 5555;   // need to receive as argument
+    const int server_port = strtol(argv[2], NULL, 10);   // need to receive as argument
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
         perror("error creating socket");
@@ -107,32 +108,18 @@ int main() {
             int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
 
             string s;
-            string distMetric;
-            int k;
 
             // convert array to string
             for (int i = 0; i < expected_data_len; i++) {
                 s = s + buffer[i];
             }
 
-            size_t found;
+            ParseAndValidate input(s);
 
-
-            for (string disMetric: Distance::possibleMetrics()) {
-                found = s.find(disMetric);
-                if (found > 0 && found < s.length()) { // found the index of the metric inside the input
-                    break;
-                }
-            }
             // parse the string into vector, distance metric and k
-
-            string subVector = s.substr(0, found);
-            distMetric = s.substr(found, 3);
-
-            string subK = s.substr(found + 4);
-
-            vector<double> v = stringToVector(subVector);
-            k = stoi(subK);
+            string distMetric = input.getDistMetric();
+            vector<double> v = input.getVector();
+            int k = input.getK();
 
             Knn knnModel(v, k, distMetric, mappedData);
 
