@@ -12,6 +12,7 @@
 #include <string.h>
 #include "ReadDataSet.h"
 #include "Knn.h"
+#include "Distance.h"
 #include <sstream>
 #include <iterator>
 
@@ -120,7 +121,7 @@ int main(){
 
     // PARSE THE STRING!!!!
 
-    for (int i = 0; i < sizeof(possibleMetrics); i++){
+    for (int i = 0; i < sizeof(Distance::possibleMetrics()); i++){
         found = s.find(possibleMetrics[i]);
         if (found > 0){
             break;

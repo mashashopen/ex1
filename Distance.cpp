@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include <string>
+#include <list>
 
 /*
 * input validation of 2 vectors.
