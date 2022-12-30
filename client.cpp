@@ -82,14 +82,7 @@ int main(int argc, char *argv[]) {
             getline(cin, s);
             ParseAndValidate input(s);
 
-            vector<double> inputVec = input.getVector();
-            int inputK = input.getK();
-            string metric = input.getDistMetric();
-
-            if (!input.isValidInput()) {
-                cout << "invalid input!" << endl;
-                continue;
-            } else if (s == "-1") {
+            if (s == "-1") {
                 close(sock);
                 exit(1);
             } else break;
@@ -106,18 +99,34 @@ int main(int argc, char *argv[]) {
         string label;
         char buffer[4096];
         int expected_data_len = sizeof(buffer);
+
+
         int read_bytes = recv(sock, buffer, expected_data_len, 0);
+
         if (read_bytes == 0) {
             // connection is closed
         } else if (read_bytes < 0) {
             cout << "error";
         } else {
+            while (read_bytes == expected_data_len) {
+                // Read more data from the socket into the buffer
+                read_bytes = recv(sock, buffer, expected_data_len, 0);
+
+                // Check for errors or end of data
+                if (read_bytes == 0) {
+                    // The other side of the connection has closed the socket
+                    break;
+                } else if (read_bytes < 0) {
+                    // An error occurred
+                    // TODO: handle the error
+                    break;
+                }
+            }
+
+
             //print the predicted class of the vector:
             //convert array to string
-            for (int i = 0; i < expected_data_len; i++) {
-                label = label + buffer[i];
-            }
-            cout << label << endl;
+            cout << buffer << endl;
         }
     }
 }

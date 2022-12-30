@@ -21,7 +21,7 @@ map<double, string> Knn:: CalculateDistance() {
 	{
 		vector<double> classifiedVector = it->first;
 		Distance d(m_v, classifiedVector, m_distanceType);
-		distanceLabel[d.getDistanceValue()] = it->second;
+        distanceLabel[d.getDistanceValue()] = it->second;
 		
 	}
 
@@ -41,13 +41,18 @@ map<double, string> Knn::FindKnearest() {
 	map<double, string> kNearestNeighbors;
 	int count = 0;
 	for (it = m_mapDistanceLabel.begin(); it != m_mapDistanceLabel.end(); it++) {
-			if (count == m_k)
-				break;
-			else
-				count += 1;
-				kNearestNeighbors[it->first] = it->second;
+        if (it -> first == -1){
+            kNearestNeighbors[it->first] = it->second;
+            break;
+        }
+
+            if (count == m_k)
+                break;
+            else
+                count += 1;
+                kNearestNeighbors[it->first] = it->second;
 	}
-		return kNearestNeighbors;
+    return kNearestNeighbors;
 	}
 
 
@@ -64,8 +69,11 @@ map<double, string> Knn::FindKnearest() {
 		int freq = 0;
 		map<double,string>::iterator it;
 		// convert all lables into vector:
-		for (it= m_kNearest.begin(); it != m_kNearest.end(); it++)
-		{
+		for (it= m_kNearest.begin(); it != m_kNearest.end(); it++){
+            if(it->first == -1){
+                return "invalid input";
+            }
+
 			labels.push_back(it->second);
 		}
 		// find the most frequent string in this vector:

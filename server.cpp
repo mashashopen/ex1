@@ -19,51 +19,6 @@
 
 using namespace std;
 
-/*
-* checks if input (vector) is not valid.
-*
-* @param s, string represent future vector.
-* @return true if is not valid, false otherwise.
-*/
-bool inputIsNotValid(string s) {
-    // case 1: empty input
-    if (s.size() == 0)
-    {
-        
-        return true;
-    }
- 
-    // case 2: dealing with chars
-    for (int i = 0; i < s.size(); i++)
-    {
-        if (isalpha(s[i])) {
-            return true;
-        }
-    }
-    return false;
-}
-
-/*
-* get vector as string input.
-*
-* @param s, string from user.
-* @return v,the vector .
-*/
-vector<double> stringToVector(string s) {
-
-    if (inputIsNotValid(s)){
-        cout << "invalid input!";
-        exit(1);
-    } 
-
-    istringstream is(s);
-    vector<double> v((istream_iterator<double>(is)), istream_iterator<double>());
-    double x;
-
-    while (is >> x) v.push_back(x);
-    return v;
-}
-
 
 
 
@@ -103,9 +58,17 @@ int main(int argc, char *argv[]) {
             perror("error accepting client");
         }
 
-        char buffer[4096];
+
+        char buffer[4096] = {};
         int expected_data_len = sizeof(buffer);
         int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
+        if (read_bytes == 0) {
+            cout << "connection is closed" << endl;
+            exit(1);
+        } else if (read_bytes < 0) {
+            cout << "error" << endl;
+            exit(1);
+        }
 
         string s;
 
@@ -124,19 +87,20 @@ int main(int argc, char *argv[]) {
         if(input.isValidInput()){
 
             Knn knnModel(v, k, distMetric, mappedData);
+            const char *classResult = knnModel.predict().c_str();
+            int sent_bytes = send(client_sock, classResult, strlen(classResult), 0);
+            if (sent_bytes < 0) {
+                perror("error sending to client");
+            }
 
-            if (read_bytes == 0) {
-                cout << "connection is closed" << endl;
-            } else if (read_bytes < 0) {
-                cout << "error" << endl;
-            } else {
+        }
+        else{   //input not valid
+            string msg = "invalid input";
+            const char *classResult = msg.c_str();
 
-                const char *classResult = knnModel.predict().c_str();
-                cout << classResult << endl;
-                int sent_bytes = send(client_sock, classResult, read_bytes, 0);
-                if (sent_bytes < 0) {
-                    perror("error sending to client");
-                }
+            int sent_bytes = send(client_sock, classResult, strlen(classResult), 0);
+            if (sent_bytes < 0) {
+                perror("error sending to client");
             }
         }
     }
