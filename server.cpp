@@ -17,20 +17,59 @@
 #include <iterator>
 #include "ParseAndValidate.h"
 
+#include <stdlib.h>
+
 using namespace std;
 
+/*
+* command line args validation.
+*
+* @param argc, argv
+* @return true if all args are valid and false otherwise.
+*/
+bool areValidArguments(int argc, char *argv[]) {
+    /*argv:
+    1. file
+    2. port number
+    */
+    bool valid = true;
 
+    //corrcet number of args:
+    if (argc == 3) {
+        //checking if second arg (port number) is correct range
+        if (strtol(argv[2], NULL, 10) < 1024 || strtol(argv[2], NULL, 10) > 65535) {
+            valid = false;
+        }
+    } else if (argc > 3) {
+        cout << "Too many arguments supplied.\n";
+        valid = false;
+    } else { //(argc < 3)
+        cout << "Missing arguments.\n";
+        valid = false;
+    }
+    return valid;
+
+}
 
 
 int main(int argc, char *argv[]) {
 
-    string file = argv[1];    // need to receive as argument
+    //checking input from command line...
+    if (!(areValidArguments(argc, argv))) {
+        cout << "invalid input! port number is not in correct range." << endl;
+        exit(1);
+    }
+
+    //after validation - set the args:
+    string file = argv[1];
+    const int server_port = strtol(argv[2], NULL, 10);
+
     ReadDataSet classified(file);
     vector<vector<string>> fileContent = classified.readFile(); //read file
     //separate data to vector -> label
     map<vector<double>, string> mappedData = classified.createMapOfData(fileContent);
 
-    const int server_port = strtol(argv[2], NULL, 10);   // need to receive as argument
+    //const int server_port = strtol(argv[2], NULL, 10);   // need to receive as argument
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
         perror("error creating socket");
@@ -44,21 +83,20 @@ int main(int argc, char *argv[]) {
         perror("error binding socket");
     }
 
+
+    if (listen(sock, 5) < 0) {
+        perror("error listening to a socket");
+    }
+
+    struct sockaddr_in client_sin;
+    unsigned int addr_len = sizeof(client_sin);
+    int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
+
+    if (client_sock < 0) {
+        perror("error accepting client");
+    }
+
     while (true) {
-
-        if (listen(sock, 5) < 0) {
-            perror("error listening to a socket");
-        }
-
-        struct sockaddr_in client_sin;
-        unsigned int addr_len = sizeof(client_sin);
-        int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
-
-        if (client_sock < 0) {
-            perror("error accepting client");
-        }
-
-
         char buffer[4096] = {};
         int expected_data_len = sizeof(buffer);
         int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
@@ -84,7 +122,7 @@ int main(int argc, char *argv[]) {
         vector<double> v = input.getVector();
         int k = input.getK();
 
-        if(input.isValidInput()){
+        if (input.isValidInput()) {
 
             Knn knnModel(v, k, distMetric, mappedData);
             const char *classResult = knnModel.predict().c_str();
@@ -93,8 +131,7 @@ int main(int argc, char *argv[]) {
                 perror("error sending to client");
             }
 
-        }
-        else{   //input not valid
+        } else {   //input not valid
             string msg = "invalid input";
             const char *classResult = msg.c_str();
 
@@ -103,6 +140,7 @@ int main(int argc, char *argv[]) {
                 perror("error sending to client");
             }
         }
+
     }
 
     close(sock);
