@@ -12,13 +12,9 @@
 * 
 * @param v1, v2- vectors to check.
 */
-void Distance::validationOfTwoVec(vector<double> v1, vector<double> v2) {
+bool Distance::validationOfTwoVec(vector<double> v1, vector<double> v2) {
 
-   if (v1.size() != v2.size())
-   {
-       cout << "invalid input!";
-           exit(1);
-   }
+   return (v1.size() != v2.size());
  }
 
 /*
@@ -52,24 +48,24 @@ void Distance::printDistance() {
 * @return the right compute distance function.
 */
 double Distance::setRightDistanceFunction(string distanceType) {
-    if (distanceType == "AUC") {
-        return computeEuclideanDistance(m_v1, m_v2);
-    }
-    else if (distanceType == "MAN") {
-        return computeManhattanDistance(m_v1, m_v2);
-    }
-    else if (distanceType == "CHB") {
-        return computeChebyshevDistance(m_v1, m_v2);
-    }
-    else if (distanceType == "CAN") {
-        return computeCanberraDistance(m_v1, m_v2);
-    }
-    else if (distanceType == "MIN") {
-        return computeMinkowskiDistance(m_v1, m_v2);
+    if(m_validVectors) {
+        if (distanceType == "AUC") {
+            return computeEuclideanDistance(m_v1, m_v2);
+        } else if (distanceType == "MAN") {
+            return computeManhattanDistance(m_v1, m_v2);
+        } else if (distanceType == "CHB") {
+            return computeChebyshevDistance(m_v1, m_v2);
+        } else if (distanceType == "CAN") {
+            return computeCanberraDistance(m_v1, m_v2);
+        } else if (distanceType == "MIN") {
+            return computeMinkowskiDistance(m_v1, m_v2);
 
+        } else {
+            exit(1);
+        }
     }
-    else {
-        exit(1);
+    else{
+        return -1;
     }
 }
 
