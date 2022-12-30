@@ -14,7 +14,7 @@
 */
 bool Distance::validationOfTwoVec(vector<double> v1, vector<double> v2) {
 
-   return (v1.size() != v2.size());
+   return (v1.size() == v2.size());
  }
 
 /*
