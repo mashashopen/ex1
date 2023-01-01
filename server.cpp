@@ -130,6 +130,8 @@ int main(int argc, char *argv[]) {
             if (sent_bytes < 0) {
                 perror("error sending to client");
             }
+            //reset the buffer:
+            memset(buffer,0,sizeof buffer);
 
         } else {   //input not valid
             string msg = "invalid input";
@@ -139,6 +141,8 @@ int main(int argc, char *argv[]) {
             if (sent_bytes < 0) {
                 perror("error sending to client");
             }
+            //reset the buffer:
+            memset(buffer,0,sizeof buffer);
         }
 
     }

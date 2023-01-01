@@ -17,6 +17,12 @@
 
 using namespace std;
 
+/*
+* this function check if part of the string is in valid ip type
+*
+* @param s the part to check
+* @return true if part is valid and false otherwise
+*/
 bool validPart(char *s) {
     int n = strlen(s);
     if (n > 3)
@@ -34,6 +40,12 @@ bool validPart(char *s) {
     return (x >= 0 && x <= 255);
 }
 
+/*
+* this function validate ip address.
+*
+* @param ip_string the ip address to check.
+* @return true if is valid and false otherwise.
+*/
 bool isValidIp(char *ip_string) {
     if (ip_string == NULL)
         return false;
