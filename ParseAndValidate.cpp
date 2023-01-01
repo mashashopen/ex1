@@ -1,14 +1,14 @@
-//
-// Created by masha on 29/12/2022.
-//
-
 #include "ParseAndValidate.h"
 #include "Distance.h"
 #include <iostream>
 #include <sstream>
 #include <iterator>
 
-
+/*
+* this function return the index where distance metric is beginning.
+*
+* @return the index.
+*/
 size_t ParseAndValidate::getIdxOfMetric(){
     for (string disMetric: Distance::possibleMetrics()) {
         m_idxOfDist = m_input.find(disMetric);
@@ -19,6 +19,11 @@ size_t ParseAndValidate::getIdxOfMetric(){
     return m_idxOfDist;
 }
 
+/*
+* this function return the input k (int) number.
+*
+* @return k (int) number.
+*/
 int ParseAndValidate::getK(){
     // need to change the 1 value!!!!! still dont know how
     string subK = m_input.substr(m_idxOfDist + 4, 1); //dist metric is size of 3
@@ -31,7 +36,11 @@ int ParseAndValidate::getK(){
     }
 }
 
-
+/*
+* this function return the input vector .
+*
+* @return the vector .
+*/
 vector<double> ParseAndValidate::getVector(){
 
     string subVector = m_input.substr(0, m_idxOfDist);
@@ -50,7 +59,11 @@ vector<double> ParseAndValidate::getVector(){
     return v;
 }
 
-
+/*
+* this function return the distance metric input.
+*
+* @return a string represent the distance metric.
+*/
 string ParseAndValidate::getDistMetric(){
     if(!isValidMetric()){
         m_isValidInput = false;
@@ -62,6 +75,12 @@ string ParseAndValidate::getDistMetric(){
     return distMetric;
 }
 
+/*
+* this function checks if the (input) vector is valid.
+*
+* @param s, string to check.
+* @return true if is valid and false otherwise.
+*/
 bool ParseAndValidate::stringVectorIsValid(string s) {
     // case 1: empty input
     if (s.size() == 0){
@@ -90,10 +109,21 @@ bool ParseAndValidate::isNumber(const string &s) {
     }
     return true;
 }
+
+/*
+* this function checks if metric distance is valid.
+*
+* @return true if is valid and false otherwise.
+*/
 bool ParseAndValidate::isValidMetric(){
     return (m_idxOfDist > 0 && m_idxOfDist < m_input.length());
 }
 
+/*
+* this function if the total input   is valid.
+*
+* @return true if is valid and false otherwise.
+*/
 bool ParseAndValidate::isValidInput(){
     return m_isValidInput;
 }
