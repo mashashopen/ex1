@@ -7,14 +7,10 @@
 #include <sys/socket.h>
 #include <stdio.h>
 #include <netinet/in.h>
-#include <arpa/inet.h>
 #include <unistd.h>
-#include <string.h>
 #include "ReadDataSet.h"
 #include "Knn.h"
 #include "Distance.h"
-#include <sstream>
-#include <iterator>
 #include "ParseAndValidate.h"
 
 #include <stdlib.h>
@@ -34,7 +30,7 @@ bool areValidArguments(int argc, char *argv[]) {
     */
     bool valid = true;
 
-    //corrcet number of args:
+    //correct number of args:
     if (argc == 3) {
         //checking if second arg (port number) is correct range
         if (strtol(argv[2], NULL, 10) < 1024 || strtol(argv[2], NULL, 10) > 65535) {
@@ -96,8 +92,10 @@ int main(int argc, char *argv[]) {
         perror("error accepting client");
     }
 
-    while (true) {
+    while (client_sock) {
         char buffer[4096] = {};
+        const char *classResult = "";   //this the server will send as an answer to the client
+
         int expected_data_len = sizeof(buffer);
         int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
         if (read_bytes == 0) {
@@ -112,7 +110,16 @@ int main(int argc, char *argv[]) {
 
         // convert array to string
         for (int i = 0; i < expected_data_len; i++) {
+            if(!buffer[i]){     //include only actual data without zero values
+                break;
+            }
             s = s + buffer[i];
+        }
+
+        if (s == "-1"){
+            close(client_sock);
+            client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
+            continue;
         }
 
         ParseAndValidate input(s);
@@ -125,7 +132,7 @@ int main(int argc, char *argv[]) {
         if (input.isValidInput()) {
 
             Knn knnModel(v, k, distMetric, mappedData);
-            const char *classResult = knnModel.predict().c_str();
+            classResult = knnModel.predict().c_str();
             int sent_bytes = send(client_sock, classResult, strlen(classResult), 0);
             if (sent_bytes < 0) {
                 perror("error sending to client");
@@ -135,7 +142,7 @@ int main(int argc, char *argv[]) {
 
         } else {   //input not valid
             string msg = "invalid input";
-            const char *classResult = msg.c_str();
+            classResult = msg.c_str();
 
             int sent_bytes = send(client_sock, classResult, strlen(classResult), 0);
             if (sent_bytes < 0) {
