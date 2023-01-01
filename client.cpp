@@ -136,24 +136,6 @@ bool inputIsNotValid(string s) {
     return false;
 }
 
-/*
-* get vector as string input.
-*
-* @param s, string from user.
-* @return v,the vector .
-*/
-vector<double> stringToVector(string s) {
-
-    if (inputIsNotValid(s)) {
-        cout << "invalid input!";
-        exit(1);
-    }
-
-    istringstream is(s);
-    vector<double> v((istream_iterator<double>(is)), istream_iterator<double>());
-    double x;
-}
-
 int main(int argc, char *argv[]) {
     const char *ip_address = argv[1];
     const int port_no = stoi(argv[2]);
@@ -161,6 +143,7 @@ int main(int argc, char *argv[]) {
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
         perror("error creating socket");
+        exit(1);
     }
 
     struct sockaddr_in sin;
@@ -174,29 +157,25 @@ int main(int argc, char *argv[]) {
     }
 
     while (true) {
-        string s;
-
-        //while loop to get another input in case of invalid input:
-        while (true) {
-            getline(cin, s);
-            ParseAndValidate input(s);
-
-            if (s == "-1") {
-                close(sock);
-                exit(1);
-            } else break;
-        }
+        string s = "";
+        getline(cin, s);
+        ParseAndValidate input(s);
 
         char const *data_addr = s.c_str();
 
         int data_len = strlen(data_addr);
         int sent_bytes = send(sock, data_addr, data_len, 0);
 
+        if(s == "-1"){
+            close(sock);
+            exit(1);
+        }
+
         if (sent_bytes < 0) {
             // error
         }
         string label;
-        char buffer[4096];
+        char buffer[4096] = {};
         int expected_data_len = sizeof(buffer);
 
 
@@ -221,7 +200,6 @@ int main(int argc, char *argv[]) {
                     break;
                 }
             }
-
 
             //print the predicted class of the vector:
             //convert array to string

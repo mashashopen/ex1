@@ -25,8 +25,7 @@ size_t ParseAndValidate::getIdxOfMetric(){
 * @return k (int) number.
 */
 int ParseAndValidate::getK(){
-    // need to change the 1 value!!!!! still dont know how
-    string subK = m_input.substr(m_idxOfDist + 4, 1); //dist metric is size of 3
+    string subK = m_input.substr(m_idxOfDist + 4); //dist metric is size of 3
     if(!isNumber(subK)){
         m_isValidInput = false;
         return -1;
