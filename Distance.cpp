@@ -15,16 +15,6 @@ bool Distance::validationOfTwoVec(vector<double> v1, vector<double> v2) {
  }
 
 /*
-* checks if number is whole.
-* 
-* @return true if is whole, false otherwise.
-*/
-bool Distance::isWholeNumber() {
-	return floor(m_distanceValue) == m_distanceValue;
-}
-
-
-/*
 * this function sets the distance metric according to the input.
 *
 * @param distanceType the string represent the distance metric
