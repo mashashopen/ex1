@@ -6,9 +6,7 @@
 #include <unistd.h>
 #include <string.h>
 
-#include <vector>
 #include <string>
-#include <iterator>
 #include <sstream>
 #include "Distance.h"
 #include "ParseAndValidate.h"
