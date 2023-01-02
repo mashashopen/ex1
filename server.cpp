@@ -1,9 +1,7 @@
 #include <iostream>
 #include <string.h>
-
 #include <vector>
 #include <string>
-
 #include <sys/socket.h>
 #include <stdio.h>
 #include <netinet/in.h>
@@ -61,8 +59,6 @@ int main(int argc, char *argv[]) {
     const int server_port = strtol(argv[2], NULL, 10);
 
     ReadDataSet classified(file);
-
-
     vector<vector<string>> fileContent = classified.readFile(); //read file
     //separate data to vector -> label
     map<vector<double>, string> mappedData = classified.createMapOfData(fileContent);

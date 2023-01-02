@@ -15,9 +15,8 @@ class ReadDataSet
 
 public:
 	ReadDataSet(string fileName) {
-		
 		m_fileName = fileName;
-
+        m_numOfRows = 0;    //initial value that will be updates during readFile function
 	}
 	vector<vector<string>> readFile();
 	map<vector<double>, string> createMapOfData(vector<vector<string>> fileContent);

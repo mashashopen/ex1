@@ -1,12 +1,19 @@
 #include "ReadDataSet.h"
 #include <iostream>
-#include <fstream>
 #include <string>
 #include <vector>
-#include <sstream>
 #include <map>
 
 using namespace std;
+
+/*
+* this function return the amount of rows there are in the file, stored on member m_numOfRows.
+*
+* @return num of rows in the file.
+*/
+int ReadDataSet::getNumOfRows() {
+    return m_numOfRows;
+}
 
 
 /*
@@ -23,7 +30,6 @@ vector<vector<string>> ReadDataSet::readFile() {
 
 
     fstream file;
-    string a = m_fileName;
     file.open(m_fileName, ios::in);
     if (file.is_open()) {
         while (getline(file, line)) {
@@ -95,8 +101,4 @@ map<vector<double>, string> ReadDataSet::createMapOfData(vector<vector<string>> 
     }
 
     return classified;
-}
-
-int ReadDataSet::getNumOfRows() {
-    return m_numOfRows;
 }
