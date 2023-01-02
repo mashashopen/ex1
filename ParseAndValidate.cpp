@@ -1,6 +1,5 @@
 #include "ParseAndValidate.h"
 #include "Distance.h"
-#include <iostream>
 #include <sstream>
 #include <iterator>
 

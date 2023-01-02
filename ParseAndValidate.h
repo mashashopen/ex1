@@ -1,10 +1,5 @@
-//
-// Created by masha on 29/12/2022.
-//
 #include <string>
 #include <vector>
-#ifndef EX1_PARSEANDVALIDATE_H
-#define EX1_PARSEANDVALIDATE_H
 
 
 using namespace std;
@@ -35,9 +30,3 @@ public:
     bool isValidInput();
 
 };
-
-
-
-
-
-#endif //EX1_PARSEANDVALIDATE_H

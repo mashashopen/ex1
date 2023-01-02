@@ -88,7 +88,7 @@ bool areValidArguments(int argc, char *argv[]) {
     */
     bool valid = true;
 
-    //corrcet number of args:
+    //correct number of args:
     if (argc == 3) {
         //checking if second arg (port number) is correct range
         if (strtol(argv[2], NULL, 10) < 1024 || strtol(argv[2], NULL, 10) > 65535) {

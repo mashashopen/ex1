@@ -2,7 +2,6 @@
 #include <vector>
 #include <sstream>
 #include "Distance.h"
-#include <iterator>
 #include <string>
 #include <map>
 #include "Knn.h"

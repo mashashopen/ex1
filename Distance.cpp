@@ -1,10 +1,7 @@
 #include "Distance.h"
-#include <iostream>
 #include <vector>
 #include <cmath>
-#include <iostream>
 #include <string>
-#include <list>
 
 /*
 * input validation of 2 vectors.
@@ -26,20 +23,6 @@ bool Distance::isWholeNumber() {
 	return floor(m_distanceValue) == m_distanceValue;
 }
 
-
-/*
-* if a number is whole will force it to be printed with point
-* zero in the end (and not as integer).
-*/
-
-void Distance::printDistance() {
-	if(isWholeNumber()) {
-        cout << m_distanceValue << ".0" << endl;
-	}
-	else {
-        cout << m_distanceValue << endl;
-	}
-}
 
 /*
 * this function sets the distance metric according to the input.

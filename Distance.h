@@ -21,8 +21,6 @@ public:
 
     static const list<string> possibleMetrics() { return {"MAN", "CHB", "AUC", "CAN", "MIN"}; }
 	bool validationOfTwoVec(vector<double> v1, vector<double> v2);
-	bool isWholeNumber();
-	void printDistance();
 	double setRightDistanceFunction(string distanceType);
 	double getDistanceValue();
 };
@@ -31,5 +29,3 @@ double computeCanberraDistance(vector<double> v1, vector<double> v2);
 double computeEuclideanDistance(vector<double> v1, vector<double> v2);
 double computeManhattanDistance(vector<double> v1, vector <double> v2);
 double computeMinkowskiDistance(vector<double> v1, vector <double> v2);
-vector<double> getVectorAsInput();
-bool inputIsNotValid(string s);
