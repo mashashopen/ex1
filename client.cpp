@@ -5,10 +5,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
-
-#include <vector>
 #include <string>
-#include <iterator>
 #include <sstream>
 #include "Distance.h"
 #include "ParseAndValidate.h"
@@ -123,7 +120,6 @@ bool areValidArguments(int argc, char *argv[]) {
 bool inputIsNotValid(string s) {
     // case 1: empty input
     if (s.size() == 0) {
-
         return true;
     }
 
@@ -154,6 +150,7 @@ int main(int argc, char *argv[]) {
 
     if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("error connecting to server");
+        exit(1);
     }
 
     while (true) {
@@ -166,13 +163,14 @@ int main(int argc, char *argv[]) {
         int data_len = strlen(data_addr);
         int sent_bytes = send(sock, data_addr, data_len, 0);
 
-        if(s == "-1"){
+        if (s == "-1") {
             close(sock);
             exit(1);
         }
 
         if (sent_bytes < 0) {
-            // error
+            perror("error in sending to server");
+            exit(1);
         }
         string label;
         char buffer[4096] = {};
@@ -182,9 +180,12 @@ int main(int argc, char *argv[]) {
         int read_bytes = recv(sock, buffer, expected_data_len, 0);
 
         if (read_bytes == 0) {
-            // connection is closed
+            perror("connection is closed");
+            exit(1);
+
         } else if (read_bytes < 0) {
-            cout << "error";
+            perror("An error occurred");
+            break;
         } else {
             while (read_bytes == expected_data_len) {
                 // Read more data from the socket into the buffer
@@ -193,10 +194,10 @@ int main(int argc, char *argv[]) {
                 // Check for errors or end of data
                 if (read_bytes == 0) {
                     // The other side of the connection has closed the socket
+                    cout << "connection is closed";
                     break;
                 } else if (read_bytes < 0) {
-                    // An error occurred
-                    // TODO: handle the error
+                    perror("An error occurred");
                     break;
                 }
             }

@@ -61,14 +61,16 @@ int main(int argc, char *argv[]) {
     const int server_port = strtol(argv[2], NULL, 10);
 
     ReadDataSet classified(file);
+
+
     vector<vector<string>> fileContent = classified.readFile(); //read file
     //separate data to vector -> label
     map<vector<double>, string> mappedData = classified.createMapOfData(fileContent);
 
-    //const int server_port = strtol(argv[2], NULL, 10);   // need to receive as argument
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
         perror("error creating socket");
+        exit(1);
     }
     struct sockaddr_in sin;
     memset(&sin, 0, sizeof(sin));
@@ -77,11 +79,13 @@ int main(int argc, char *argv[]) {
     sin.sin_port = htons(server_port);
     if (bind(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("error binding socket");
+        exit(1);
     }
 
 
     if (listen(sock, 5) < 0) {
         perror("error listening to a socket");
+        exit(1);
     }
 
     struct sockaddr_in client_sin;
@@ -90,6 +94,7 @@ int main(int argc, char *argv[]) {
 
     if (client_sock < 0) {
         perror("error accepting client");
+        exit(1);
     }
 
     while (client_sock) {
@@ -110,13 +115,13 @@ int main(int argc, char *argv[]) {
 
         // convert array to string
         for (int i = 0; i < expected_data_len; i++) {
-            if(!buffer[i]){     //include only actual data without zero values
+            if (!buffer[i]) {     //include only actual data without zero values
                 break;
             }
             s = s + buffer[i];
         }
 
-        if (s == "-1"){
+        if (s == "-1") {
             close(client_sock);
             client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
             continue;
@@ -129,16 +134,33 @@ int main(int argc, char *argv[]) {
         vector<double> v = input.getVector();
         int k = input.getK();
 
+
+
         if (input.isValidInput()) {
+
+            // checking if  k > number of rows:
+            if (classified.getNumOfRows() < k) {
+                string msg = "invalid input";
+                classResult = msg.c_str();
+
+                int sent_bytes = send(client_sock, classResult, strlen(classResult), 0);
+                if (sent_bytes < 0) {
+                    perror("error sending to client");
+                    exit(1);
+                }
+                //reset the buffer:
+                memset(buffer, 0, sizeof buffer);
+            }
 
             Knn knnModel(v, k, distMetric, mappedData);
             classResult = knnModel.predict().c_str();
             int sent_bytes = send(client_sock, classResult, strlen(classResult), 0);
             if (sent_bytes < 0) {
                 perror("error sending to client");
+                exit(1);
             }
             //reset the buffer:
-            memset(buffer,0,sizeof buffer);
+            memset(buffer, 0, sizeof buffer);
 
         } else {   //input not valid
             string msg = "invalid input";
@@ -147,9 +169,10 @@ int main(int argc, char *argv[]) {
             int sent_bytes = send(client_sock, classResult, strlen(classResult), 0);
             if (sent_bytes < 0) {
                 perror("error sending to client");
+                exit(1);
             }
             //reset the buffer:
-            memset(buffer,0,sizeof buffer);
+            memset(buffer, 0, sizeof buffer);
         }
 
     }
