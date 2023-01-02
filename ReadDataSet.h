@@ -11,13 +11,16 @@ using namespace std;
 class ReadDataSet
 {
 	string m_fileName;
+    int m_numOfRows;
 
 public:
 	ReadDataSet(string fileName) {
 		
 		m_fileName = fileName;
+
 	}
 	vector<vector<string>> readFile();
 	map<vector<double>, string> createMapOfData(vector<vector<string>> fileContent);
+    int getNumOfRows();
 };
 

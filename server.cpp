@@ -61,6 +61,8 @@ int main(int argc, char *argv[]) {
     const int server_port = strtol(argv[2], NULL, 10);
 
     ReadDataSet classified(file);
+
+
     vector<vector<string>> fileContent = classified.readFile(); //read file
     //separate data to vector -> label
     map<vector<double>, string> mappedData = classified.createMapOfData(fileContent);
@@ -132,7 +134,23 @@ int main(int argc, char *argv[]) {
         vector<double> v = input.getVector();
         int k = input.getK();
 
+
+
         if (input.isValidInput()) {
+
+            // checking if  k > number of rows:
+            if (classified.getNumOfRows() < k) {
+                string msg = "invalid input";
+                classResult = msg.c_str();
+
+                int sent_bytes = send(client_sock, classResult, strlen(classResult), 0);
+                if (sent_bytes < 0) {
+                    perror("error sending to client");
+                    exit(1);
+                }
+                //reset the buffer:
+                memset(buffer, 0, sizeof buffer);
+            }
 
             Knn knnModel(v, k, distMetric, mappedData);
             classResult = knnModel.predict().c_str();
