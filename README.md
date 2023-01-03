@@ -79,5 +79,5 @@ First, we used the same repository from ex1 (part 1). The current assignment is 
 note that the client program should run from a different computer or a different terminal (if working on one computer for both client and server programs)
  
  for example:
- ./server.out iris_classified.csv 1024
+ ./server.out iris_classified.csv 1024\n
  ./client.out 127.0.0.1 1024
