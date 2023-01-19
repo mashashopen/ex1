@@ -1,56 +1,115 @@
 #include <iostream>
 #include <vector>
+#include <string>
+#include<iostream>
+#include "string.h"
+#include <fstream>
+#include "ReadDataSet.h"
 
+
+
+using namespace std;
 class DefaultIO {
 public:
-    virtual void input() = 0;
-    virtual void output() = 0;
+    virtual string input() = 0;
+    virtual void input(float* f) = 0;
+    virtual void input(string data) = 0;
+    virtual void output(string data) = 0;
+
+    void readAndFile(string fileName){
+        ofstream out(fileName);
+        string s = "";
+        while((s = input()) != "done"){
+            out<<s<<endl;
+        }
+        out.close();
+    }
+
+
 };
 
 class StandardIO : public DefaultIO {
 public:
-    void input() {
-        std::cout << "Input data from standard input" << std::endl;
+    void input(string data) {
+        std::cin >> data;
     }
 
-    void output() {
-        std::cout << "Output data to standard output" << std::endl;
+    void output(string data) {
+        std::cout << data << std::endl;
     }
 };
 
 class SocketIO : public DefaultIO {
 public:
-    void input() {
-        std::cout << "Input data from socket" << std::endl;
+    void input(std::string &data) {
+        // code for reading data from socket
     }
 
-    void output() {
-        std::cout << "Output data to socket" << std::endl;
+    void output(std::string &data) {
+        // code for sending data to socket
     }
 };
 
+
+struct CurrentState{
+    int k;
+    string distMetric;
+    vector<vector<string>> fileContent; //read file
+    //separate data to vector -> label
+    map<vector<double>, string> mappedData = classified.createMapOfData(fileContent);
+
+    CurrentState(){
+        k = 5;
+        distMetric = "AUC";
+    }
+};
+
+
+
+
+
+
 class Command {
+
+protected:
+    DefaultIO* m_dio;
 public:
-    virtual void execute() = 0;
+    const string m_description;
+    Command(DefaultIO* dio, const string description): m_dio(dio), m_description(description){}
+    virtual void execute(CurrentState* CurrentState) = 0;
+    virtual ~Command(){}
 };
 
 class UploadCommand : public Command {
-    DefaultIO& io;
 public:
-    UploadCommand(DefaultIO& io) : io(io) {}
-    void execute() {
-        std::cout << "Uploading unclassified csv data file" << std::endl;
-        io.input();
+    UploadCommand(DefaultIO* dio) : Command(dio, "upload an unclassified csv data file") {}
+    virtual void execute(CurrentState* CurrentState) {
+        string file_path;
+
+        m_dio -> output("Please upload your local train CSV file.\n");
+        m_dio -> input(file_path);
+        m_dio->output("Upload complete.\n");
+
+        m_dio -> output("Please upload your local train CSV file.\n");
+        m_dio -> input(file_path);
+        m_dio->output("Upload complete.\n");
     }
 };
 
 class SettingsCommand : public Command {
-    DefaultIO& io;
+    DefaultIO* dio;
 public:
-    SettingsCommand(DefaultIO& io) : io(io) {}
-    void execute() {
-        std::cout << "Setting algorithm parameters" << std::endl;
-        io.input();
+    SettingsCommand(DefaultIO* dio) : Command(dio, "algorithm settings") {}
+    void execute(CurrentState* CurrentState) {
+        // NEED TO CREATE STRUCT OF CURRENT STATE OF THE ALGORITHM
+        int k = CurrentState->k;
+        string dist = CurrentState->distMetric;
+        m_dio ->output("The current KNN parameters are: K = " + to_string(k) + ", distance metric = " + dist);
+        string newParameters;
+        m_dio ->input(newParameters);//NEED TO CHECK VALIDATION. IF "ENTER", DON'T DO ANYTHING
+        CurrentState->k = 5;
+        CurrentState ->distMetric = "";
+
     }
 };
 
@@ -133,4 +192,5 @@ public:
             }
         }
     }
+}
 
